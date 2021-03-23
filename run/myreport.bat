@@ -1,0 +1,2 @@
+cd ..
+allure serve ./result

@@ -1,0 +1,52 @@
+{
+    "main_url": "preprod_url",
+    
+    "os": "win",
+    
+    "main_webdriver": "webdriver2",
+
+    "main_dimension_x": "1080",
+
+    "main_dimension_y": "800",
+    
+    "test_host_environment": [
+        {
+            "mac": [
+                        {
+                        
+                            "webdriver1": "./webdrivers/mac/chromedriver"
+                        },
+                        {
+                            "webdriver2": "./webdrivers/mac/geckodriver"
+                        }
+            ]
+        },
+
+        {
+            "win": [
+                        {
+                            "webdriver1": "./webdrivers/win/chromedriver.exe"
+                        },
+                        {
+                            "webdriver2": "./webdrivers/win/geckodriver.exe"
+                        }
+            
+            ]
+        },
+
+        {
+            "linux": [
+                        {
+                        
+                            "webdriver1": "./webdrivers/linux/chromedriver"
+                        },
+                        {
+                            "webdriver2": "./webdrivers/linux/geckodriver"
+                        }
+            ]
+        }
+
+    ]
+    
+
+}

@@ -1,0 +1,70 @@
+{
+
+    "staging_url": "https://www.staging.pfizerclinicaltrials.com/",
+    "testing_url": "https://www.testing.pfizerclinicaltrials.com/",
+    "preprod_url": "https://www.pfizerclinicaltrials.com/",
+
+    "test_EPIC_PECT_001_A-Login": [
+        {
+            "Employee-ID": "PE0007982357",
+            "Landing-Page": "Login",
+            "User-Name": "sam",
+            "Password": "myPfizerTestLoginP@ssW0rd",
+            "Login-Role": "admin",
+            "Profile-Page": "user-admin-section"
+        },
+        {
+            "Guest-ID": "PG0008982365731",
+            "Landing-Page": "Login",
+            "User-Name": "guest8982365731",
+            "Password": "myPfizerTestGuestP@ssW0rd",
+            "Login-Role": "guest",
+            "Profile-Page": "general-guest-section"
+        }
+    ],
+    
+    "test_EPIC_PECT_001_A-NegativeLogin": [
+    
+        {
+            "Employee-ID": "PE00000000000NG",
+            "Landing-Page": "Login",
+            "User-Name": "isabel",
+            "Password": "Wuw*yyyy098123937zsqdh$QWerT7y",
+            "Login-Role": "admin",
+            "Profile-Page": "invalid-userattempt-section"
+        },
+        {
+            "Guest-ID": "PG0000000000000NG",
+            "Landing-Page": "Login",
+            "User-Name": "pfizerguestfortest",
+            "Password": "myPfizerTestGuestP@ssW0rd82b-_*7e6e shgshj",
+            "Login-Role": "guest",
+            "Profile-Page": "invalid-userattempt-section"
+        }
+    ],
+    
+    "test_EPIC_PECT_001_A-TrialMedicine": [
+        {
+            "TRIAL-Search": "NCT0007896543GA",
+            "Symptoms-Diagnosis001": "Migrane",
+            "Symptoms-Diagnosis002": "Abnoxia",
+            "Symptoms-Diagnosis003": "Giddiness",
+            "TrialMedicine-001": "AmperdyneAxol",
+            "TrialMedicine-001-mg": "15mg",
+            "TrialMedicine-001-Dosage-PerDay": "03",
+            "TrialMedicine-Type": "Tablet"
+        },
+
+        {
+            "TRIAL-Search": "NCT0007896773GA",
+            "Symptoms-Diagnosis001": "Fever",
+            "Symptoms-Diagnosis002": "Abnoxia",
+            "Symptoms-Diagnosis003": "Giddiness",
+            "TrialMedicine-001": "AlphaPherolX787",
+            "TrialMedicine-001-mg": "5mg",
+            "TrialMedicine-001-Dosage-PerDay": "01",
+            "TrialMedicine-Type": "Injection"
+        }
+    ]
+    
+}
