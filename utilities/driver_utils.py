@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 
 class Common_Actions:
@@ -14,3 +15,15 @@ class Common_Actions:
         action.perform()
         return driver
 
+
+    def switch_to_my_window_handle(self, driver, handle_index=0):
+        try:
+            #driver.switch_to_window[handle_index]
+            action = ActionChains(driver)
+            action.send_keys(Keys.CONTROL + Keys.TAB)
+            action.perform()
+
+        except Exception as e0:
+            pass
+
+        return driver

@@ -2,7 +2,7 @@
 #
 # Author: ITTDigital
 #
-@PECT_TC000
+@PECT_TC011
 Feature: User navigates to Internal Medicine Page and accesses Like and Dislike button
 
   Scenario: PECT_TC011_A_User_accesses_Internal_Medicine_and_clicks_thumbs_up
