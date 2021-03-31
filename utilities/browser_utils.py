@@ -1,3 +1,5 @@
+import time
+
 import selenium
 import utilities
 from selenium import webdriver
@@ -80,7 +82,7 @@ class MyBrowser:
     def set_browser_view_dimensions(self, driver):
         dimension_x = utilities.config_utils.get_My_Config().my_config(my_test_config_key="main_dimension_x")
         dimension_y = utilities.config_utils.get_My_Config().my_config(my_test_config_key="main_dimension_y")
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(14)
         driver.set_window_size(int(dimension_x), int(dimension_y))
         return driver
 
@@ -93,6 +95,8 @@ class MyBrowser:
 
 
     def hover_and_click_on_web_element(self, driver, myxpath, index_location=None):
+        xElements = None
+        xElement = None
         if(index_location!=None):
             xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
             try:
@@ -101,20 +105,20 @@ class MyBrowser:
                 pass
 
             try:
-                xElements[int(index_location)].click()
+                xElement = xElements[int(index_location)]
             except Exception as e1:
                 pass
         elif(index_location==None):
             xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
             try:
                 driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
-            except Exception as e0:
+            except Exception as e2:
                 pass
 
-            try:
-                xElement.click()
-            except Exception as e1:
-                pass
+        try:
+            xElement.click()
+        except Exception as e3:
+            pass
 
         return driver
 
@@ -189,6 +193,38 @@ class MyBrowser:
 
         return driver, mytext
 
+
+    def navigate_to_end_of_the_page(self, driver, myxpath, index_location=None):
+        xElements = None
+        xElement = None
+
+        if(index_location!=None):
+            try:
+                xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+            except Exception as e0:
+                pass
+
+            try:
+                xElement = xElements[int(index_location)]
+            except Exception as e1:
+                pass
+
+        elif(index_location==None):
+            try:
+                xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
+            except Exception as e2:
+                pass
+        try:
+            driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
+        except Exception as e3:
+            pass
+
+        try:
+            xElement.send_keys(Keys.CONTROL + Keys.END)
+        except Exception as e5:
+                pass
+
+        return driver
 
 
 

@@ -2,7 +2,7 @@
 #
 # Author: ITTDigital
 #
-@PECT_TC000
+@PECT_TC012
 Feature: User navigates to Internal Medicine Page and accesses Email and Print Option
 
   Scenario: PECT_TC012_A_User_accesses_Internal_Medicine_and_checks_Email_option
