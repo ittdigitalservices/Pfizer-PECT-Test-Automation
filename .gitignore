@@ -28,6 +28,10 @@ share/python-wheels/
 MANIFEST
 result/screenshot/*.*
 result/*.*
+.idea
+.idea/*
+.idea/*.*
+
 
 
 # PyInstaller
