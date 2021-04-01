@@ -171,6 +171,9 @@ def test_pect_tc003_c_012_user_searches_COVID_19_and_collects_count():
     """User then searches for COVID-19 and collects certain displayed data like count."""
     global driver
     global myCovid19_Search_Count01
+    global mycovid19_Search_Count02
+    myCovid19_Search_Count01 = 0
+    mycovid19_Search_Count02 = 0
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Pfizer_Home_Image(driver)
     mytext = "COVID 19"
@@ -191,6 +194,7 @@ def test_pect_tc003_c_013_user_searches_covid19_and_collects_count():
     """User then searches for covid-19 and collects certain displayed data like count."""
     global driver
     global mycovid19_Search_Count02
+    mycovid19_Search_Count02 = 0
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Pfizer_Home_Image(driver)
     mytext = "covid-19"

@@ -25,7 +25,7 @@ class PECT_Common_Utils:
             xElement.click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Object Failed")
-
+            assert False
         return driver
 
 
@@ -41,6 +41,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Object Failed")
+            assert False
         return driver
 
 
@@ -55,6 +56,7 @@ class PECT_Common_Utils:
             driver = mystep.move_mouse_cursor_to_webelement(driver, xElements[0])
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Hover to Object Failed")
+            assert False
         return driver
 
 
@@ -73,24 +75,29 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Home Logo Object Failed")
+            assert False
         return driver
 
 
     def PECT_Pfizer_Home_Image(self, driver):
         myxpath = PECT_WebElement_Locators().pfizer_home_image
 
-        xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+        try:
+            xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+        except Exception as e00:
+            pass
 
         try:
             mystep = utilities.driver_utils.Common_Actions()
             driver = mystep.move_mouse_cursor_to_webelement(driver, xElements[0])
-        except Exception as e:
+        except Exception as e01:
             pass
 
         try:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Home Image Object Failed")
+            assert False
         return driver
 
 
@@ -103,6 +110,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Clinical Trial Works Failed")
+            assert False
         return driver
 
 
@@ -114,6 +122,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Our Research Object Failed")
+            assert False
         return driver
 
 
@@ -126,6 +135,7 @@ class PECT_Common_Utils:
             xElements[1].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on PECT Vaccines Failed")
+            assert False
         return driver
 
 
@@ -138,6 +148,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Search for Covid19 Trial Text Failed")
+            assert False
         return driver
 
 
@@ -147,6 +158,7 @@ class PECT_Common_Utils:
             driver = utilities.browser_utils.MyBrowser().hover_and_click_on_web_element(driver, myxpath, index_location=0)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Search for Covid19 Info Failed")
+            assert False
         return driver
 
 
@@ -158,6 +170,7 @@ class PECT_Common_Utils:
             driver = mystep.move_mouse_cursor_to_webelement(driver, xElement)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Hover over WebElement Object Failed")
+            assert False
         return driver
 
 
@@ -172,6 +185,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Navbar Object Failed")
+            assert False
         return driver
 
 
@@ -185,25 +199,35 @@ class PECT_Common_Utils:
             #xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Hover Over Show Filters Object Failed")
+            assert False
         return driver
 
 
     def PECT_Access_Trial_Search_Filter(self, driver):
         myxpath = PECT_WebElement_Locators.pfizer_find_a_trial_search_filter
 
-        xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+        try:
+            xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+        except Exception as e00:
+            pass
+
+        try:
+            xElement = xElements[0]
+        except Exception as e01:
+            pass
 
         try:
             self.PECT_Hover_About_WebElement(driver, xElements[0])
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Search Filter Object Failed")
+            assert False
         return driver
 
 
     def PECT_CoronaVirus_COVID_2019_info(self, driver):
         myxpath = PECT_WebElement_Locators.coronavirus_COVID_2019
-
+        #utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
         xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
 
         try:
@@ -211,6 +235,7 @@ class PECT_Common_Utils:
             xElements[0].click()
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on Covid19 info Object Failed")
+            assert False
         return driver
 
     """
@@ -233,10 +258,10 @@ class PECT_Common_Utils:
 
         xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
         try:
-            if (xElement != None):
-                pass
+            utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Clinical Trial Object Text was not found")
+            assert False
         return driver
 
 
@@ -250,6 +275,7 @@ class PECT_Common_Utils:
             pass
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Click on About Clinical Trials Failed")
+            assert False
         return driver
 
 
@@ -259,6 +285,7 @@ class PECT_Common_Utils:
             driver = utilities.browser_utils.MyBrowser().hover_and_send_keys_to_web_element(driver, myxpath, index_location=index_location, mytext=mytext)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Search for Text in Trial Filter Failed")
+            assert False
         return driver
 
 
@@ -268,6 +295,7 @@ class PECT_Common_Utils:
             driver = utilities.browser_utils.MyBrowser().hover_and_click_on_web_element(driver, myxpath, index_location=index_location)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Search for Trial Button Failed")
+            assert False
         return driver
 
 
@@ -286,6 +314,7 @@ class PECT_Common_Utils:
             mycount = (mytext.split(" "))[0]
         except Exception as e1:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Get Count Failed")
+            assert False
 
         return driver, mycount
 
@@ -295,6 +324,7 @@ class PECT_Common_Utils:
             driver = utilities.browser_utils.MyBrowser.navigate_to_end_of_the_page(driver, myxpath, index_location=index_location)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Navigation to Page End Failed")
+            assert False
         return driver
 
 
@@ -303,6 +333,7 @@ class PECT_Common_Utils:
             driver = utilities.browser_utils.MyBrowser().hover_and_click_on_web_element(driver, myxpath, index_location=index_location)
         except Exception as e:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Hover Over and Click on Object Failed")
+            assert False
         return driver
 
 
@@ -326,7 +357,7 @@ class PECT_Common_Utils:
             driver = utilities.driver_utils.Common_Actions().move_mouse_cursor_to_webelement(driver, xElement)
         except Exception as e2:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Curzor Movement to WebElement Failed")
-
+            assert False
         return driver
 
 
@@ -344,6 +375,6 @@ class PECT_Common_Utils:
             mycount = (mytext.split(' '))[0]
         except Exception as e1:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Get Count from Result Failed")
-
+            assert False
         return driver, mycount
 

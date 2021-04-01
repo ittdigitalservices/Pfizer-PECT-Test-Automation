@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e13776f-388b-4990-8050-5902d6fdba9e" name="Default Changelist" comment="" />
+    <list default="true" id="4e13776f-388b-4990-8050-5902d6fdba9e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom/pect_pom.py" beforeDir="false" afterPath="$PROJECT_DIR$/pom/pect_pom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/generate.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run/generate.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC001.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC001.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC003.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC003.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC005.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC005.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC006.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC006.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC010.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC010.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC011.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC011.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/steps/test_PECT_TC012.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/steps/test_PECT_TC012.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/action_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/action_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/browser_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/browser_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/driver_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/driver_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/pect_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/pect_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/web_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/web_utils.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

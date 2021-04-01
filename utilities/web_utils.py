@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+import utilities
+
 
 class Global_Utils:
     def __self__(self):
@@ -21,10 +23,16 @@ class Global_Utils:
             try:
                 xElement = driver.find_element_by_xpath(myxpath)
             except Exception as e2:
-                pass
-
+                print("Element may be Hidden or Does not Exist")
+                xElements = driver.find_elements_by_xpath(myxpath)
+                xElement = xElements[0]
+                return xElement
         except Exception as e:
-            pass
+            try:
+                print("Element may be Hidden or Does not Exist")
+                assert False
+            except Exception as e00:
+                return None
 
         return xElement
 

@@ -98,12 +98,15 @@ class MyBrowser:
                 print("URL Navigation Failed")
                 assert False
             except Exception as e1:
-                return None
+                return driver
 
     def hover_and_click_on_web_element(self, driver, myxpath, index_location=None):
         xElements = None
         xElement = None
+        mystep = utilities.action_utils.Driver_Actions()
         if(index_location!=None):
+            driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=index_location)
+            """
             xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
             try:
                 driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElements[int(index_location)])
@@ -114,21 +117,17 @@ class MyBrowser:
                 xElement = xElements[int(index_location)]
             except Exception as e1:
                 pass
+            """
+
         elif(index_location==None):
+            driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=None)
+            """
             xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
             try:
                 driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
             except Exception as e2:
                 pass
-
-        try:
-            xElement.click()
-        except Exception as e3:
-            try:
-                print("Hover and Click on WebElement Failed")
-                assert False
-            except Exception as e1:
-                return None
+            """
         return driver
 
 
@@ -178,35 +177,15 @@ class MyBrowser:
         xElement = None
         mytext = None
 
-        if(index_location!=None):
-            try:
-                xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
-            except Exception as e0:
-                pass
-
-            try:
-                xElement = xElements[int(index_location)]
-            except Exception as e1:
-                pass
-
-        elif(index_location==None):
-            try:
-                xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
-            except Exception as e3:
-                pass
         try:
-            driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
-        except Exception as e4:
+            driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=index_location)
+        except Exception as e00:
             pass
 
         try:
             mytext = xElement.get_attribute('innerText')
-        except Exception as e5:
-            try:
-                print("Fetching Text from the Text Object Failed")
-                assert False
-            except Exception as e00:
-                return driver, ""
+        except Exception as e01:
+            pass
 
         return driver, mytext
 

@@ -115,5 +115,5 @@ def test_completion():
         driver.quit()
     except Exception as e:
         pass
-
     driver = None
+

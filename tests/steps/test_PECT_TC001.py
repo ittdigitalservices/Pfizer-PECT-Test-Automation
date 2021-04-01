@@ -62,7 +62,6 @@ def test_pect_tc001_a_003_user_accesses_home_content_and_verifies_it():
     driver = utilities.pect_utils.PECT_Common_Utils().PECT_Pfizer_Home_Image(driver)
 
 
-
 scenario_name = 'PECT_TC001_B_Verification_of_certain_Home_Page_contents'
 
 
@@ -122,5 +121,3 @@ def test_completion():
     except Exception as e:
         pass
     driver = None
-
-

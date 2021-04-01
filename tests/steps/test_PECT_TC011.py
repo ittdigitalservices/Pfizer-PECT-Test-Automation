@@ -183,4 +183,3 @@ def test_completion():
         pass
     driver = None
 
-
