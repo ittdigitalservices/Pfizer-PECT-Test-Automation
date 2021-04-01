@@ -40,21 +40,21 @@ def take_full_screenshot(driver, scenario_name):
     img_file_name = img_file_name + ".png"
     browserScreenShot = Screenshot_Clipping.Screenshot()
     img_url = browserScreenShot.full_Screenshot(driver, save_path=screen_img_path, image_name=img_file_name)
-    # print(img_url)
-    # allure.attach.file(source=img_url, name=scenario_name, attachment_type=AttachmentType.PNG)
+    #print(img_url)
+    #allure.attach.file(source=img_url, name=scenario_name, attachment_type=AttachmentType.PNG)
     allure.attach.file(img_url, attachment_type=AttachmentType.PNG)
-    # driver.quit()
+    #driver.quit()
 
 
 def take_test_screen_shot(driver, scenario_name):
     import time
     import allure
     from allure_commons.types import AttachmentType
-    if (driver == None):
+    if(driver == None):
         return None
     try:
-        # time.sleep(5)
-        # driver.maximize_window()
+        #time.sleep(5)
+        #driver.maximize_window()
         screenshot = "./result/screenshot/"
         file_name = str(time.time())
         screenshot = screenshot + file_name + ".png"
@@ -65,3 +65,4 @@ def take_test_screen_shot(driver, scenario_name):
     except Exception as e:
         pass
     return driver
+

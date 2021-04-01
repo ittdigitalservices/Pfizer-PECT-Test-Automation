@@ -88,11 +88,17 @@ class MyBrowser:
 
 
     def navigate_to_url(self, driver):
-        url_selection = utilities.config_utils.get_My_Config().my_config("main_url")
-        url_selected = utilities.data_utils.get_My_Data().my_data(my_test_data_key=url_selection, key_id=None)
-        driver.get(url_selected)
-        return driver
-
+        try:
+            url_selection = utilities.config_utils.get_My_Config().my_config("main_url")
+            url_selected = utilities.data_utils.get_My_Data().my_data(my_test_data_key=url_selection, key_id=None)
+            driver.get(url_selected)
+            return driver
+        except Exception as e0:
+            try:
+                print("URL Navigation Failed")
+                assert False
+            except Exception as e1:
+                return None
 
     def hover_and_click_on_web_element(self, driver, myxpath, index_location=None):
         xElements = None
@@ -118,8 +124,11 @@ class MyBrowser:
         try:
             xElement.click()
         except Exception as e3:
-            pass
-
+            try:
+                print("Hover and Click on WebElement Failed")
+                assert False
+            except Exception as e1:
+                return None
         return driver
 
 
@@ -155,7 +164,11 @@ class MyBrowser:
                 pass
             xElement.send_keys(mytext)
         except Exception as e3:
-            pass
+            try:
+                print("Hover and send keys to web element failed")
+                assert False
+            except Exception as e1:
+                return driver
 
         return driver
 
@@ -189,7 +202,11 @@ class MyBrowser:
         try:
             mytext = xElement.get_attribute('innerText')
         except Exception as e5:
-                pass
+            try:
+                print("Fetching Text from the Text Object Failed")
+                assert False
+            except Exception as e00:
+                return driver, ""
 
         return driver, mytext
 
@@ -222,7 +239,11 @@ class MyBrowser:
         try:
             xElement.send_keys(Keys.CONTROL + Keys.END)
         except Exception as e5:
-                pass
+            try:
+                print("Navigating to End of the Page Failed")
+                assert False
+            except Exception as e00:
+                return driver
 
         return driver
 

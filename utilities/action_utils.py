@@ -141,8 +141,8 @@ class Test_Actions:
 
     def mark_test_step_as_failed(self, message="Test Step Failed"):
         try:
-            assert False
             print(message)
+            assert False
         except Exception as e:
             print(message)
 
