@@ -69,6 +69,7 @@ def test_pect_tc006_a_003_user_verifies_research_page_link_presence():
     Pfizer_Research = pom.pect_pom.PECT_WebElement_Locators().our_research
     visit_our_research_page = pom.pect_pom.PECT_WebElement_Locators().visit_our_research_page
     mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=Pfizer_Research, index_location=0)
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=visit_our_research_page, index_location=0)
 
@@ -81,8 +82,12 @@ def test_pect_tc006_a_004_user_accesses_research_page_link_by_clicking_it():
     Pfizer_Research = pom.pect_pom.PECT_WebElement_Locators().our_research
     visit_our_research_page = pom.pect_pom.PECT_WebElement_Locators().visit_our_research_page
     mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=Pfizer_Research, index_location=0)
-    driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, index_location=0, myxpath=visit_our_research_page)
+    #driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=visit_our_research_page, index_location=0)
+    #driver, xElement = utilities.action_utils.Driver_Actions().move_cursor_to_webelement_by_xpath(driver, myxpath=visit_our_research_page, index_location=0)
+    driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement_by_xpath_and_click_it(driver, myxpath=Pfizer_Research, index_location=0, counter=2)
+    #driver = utilities.action_utils.Driver_Actions().retry_my_click(driver, xElement=xElement, counter=4)
 
 
 @pytest.mark.order(5)
@@ -93,6 +98,7 @@ def test_pect_tc006_a_005_user_verifies_some_text_in_the_research_page():
     research_page_text_content = pom.pect_pom.PECT_WebElement_Locators().research_page_text_content
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=research_page_text_content, index_location=0)
+    driver, xElement = utilities.action_utils.Driver_Actions().move_cursor_to_webelement_by_xpath(driver, myxpath=research_page_text_content, index_location=0)
 
 
 def teardown():
@@ -100,7 +106,6 @@ def teardown():
     from utilities.screenshot_utils import take_test_screen_shot
     # utilities.take_browser_screenshot.take_full_screenshot(driver, scenario_name=scenario_name)
     take_test_screen_shot(driver, scenario_name=scenario_name)
-    # driver.quit()
 
 
 @pytest.mark.order(6)

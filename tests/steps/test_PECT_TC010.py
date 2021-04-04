@@ -80,7 +80,8 @@ def test_pect_tc010_a_004_checks_clinical_trials_in_internal_medicine_page():
     myxpath = pom.pect_pom.PECT_WebElement_Locators().internal_medicine_covid
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = utilities.action_utils.Driver_Actions().driver_page_down_action(driver, my_iterator=2)
-    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    #driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=0)
     time.sleep(3)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_clinical_trials
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=1)

@@ -56,7 +56,7 @@ def test_pect_tc004_a_002_user_navigates_to_bottom_of_the_home_page():
     global driver
     rights_as_a_participant = pom.pect_pom.PECT_WebElement_Locators().rights_as_a_participant
     mystep = utilities.pect_utils.PECT_Common_Utils()
-    driver = mystep.PECT_Navigate_to_Page_End(driver, myxpath=rights_as_a_participant, index_location=0)
+    driver = mystep.PECT_Navigate_to_End_of_Page(driver)
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=rights_as_a_participant, index_location=0)
 
 
@@ -77,7 +77,6 @@ def teardown():
     from utilities.screenshot_utils import take_test_screen_shot
     # utilities.take_browser_screenshot.take_full_screenshot(driver, scenario_name=scenario_name)
     take_test_screen_shot(driver, scenario_name=scenario_name)
-    # driver.quit()
 
 
 @pytest.mark.order(4)

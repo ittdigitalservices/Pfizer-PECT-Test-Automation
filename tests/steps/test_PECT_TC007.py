@@ -62,7 +62,8 @@ def test_pect_tc007_a_002_user_navigates_to_research_page():
     visit_our_research_page = pom.pect_pom.PECT_WebElement_Locators().visit_our_research_page
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=Pfizer_Research, index_location=0)
-    driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, index_location=0, myxpath=visit_our_research_page)
+    #driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, index_location=0, myxpath=visit_our_research_page)
+    driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement_by_xpath_and_click_it(driver, myxpath=Pfizer_Research,index_location=0, counter=2)
 
 
 @pytest.mark.order(3)

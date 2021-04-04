@@ -52,7 +52,7 @@ class Global_Utils:
             except Exception as e2:
                 pass
 
-        except Exception as e:
+        except Exception as e3:
             pass
 
         return xElements

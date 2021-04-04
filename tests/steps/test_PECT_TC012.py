@@ -68,8 +68,12 @@ def test_pect_tc012_a_002_user_navigates_to_our_research_page():
 def test_pect_tc012_a_003_user_clicks_internal_medicine_link():
     """PECT_TC012_A User then clicks on the Internal Medicine link."""
     global driver
-    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().our_research
     mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_our_research_vaccines_link
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=0)
 
 
@@ -91,11 +95,12 @@ def test_pect_tc012_a_005_user_checks_email_option_in_the_landing_page():
     """PECT_TC012_A User then checks on the Email Option in the page."""
     global driver
     mystep = utilities.pect_utils.PECT_Common_Utils()
-    driver = utilities.action_utils.Driver_Actions().driver_page_down_action(driver, my_iterator=3)
+    #driver = utilities.action_utils.Driver_Actions().driver_page_down_action(driver, my_iterator=3)
+    driver = utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
     time.sleep(3)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_email
-    #driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
-    driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=0)
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    #driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=0)
 
 
 scenario_name = "PECT_TC012_B_User_accesses_Internal_Medicine_and_checks_Print_option"
@@ -135,8 +140,12 @@ def test_pect_tc012_b_007_user_navigates_to_our_research_page():
 def test_pect_tc012_b_008_user_clicks_internal_medicine_link():
     """PECT_TC012_B User then clicks on the Internal Medicine link."""
     global driver
-    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().our_research
     mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_our_research_vaccines_link
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=0)
 
 
@@ -158,11 +167,12 @@ def test_pect_tc012_b_010_user_checks_print_option_in_landing_page():
     """PECT_TC012_B User then checks on the Print Option in the page."""
     global driver
     mystep = utilities.pect_utils.PECT_Common_Utils()
-    driver = utilities.action_utils.Driver_Actions().driver_page_down_action(driver, my_iterator=3)
+    #driver = utilities.action_utils.Driver_Actions().driver_page_down_action(driver, my_iterator=3)
+    driver = utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
     time.sleep(3)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_print
-    #driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=3)
-    driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=0)
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    #driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=0)
 
 
 def teardown():

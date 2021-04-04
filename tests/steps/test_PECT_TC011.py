@@ -66,6 +66,11 @@ def test_pect_tc011_a_002_user_navigates_to_our_research_page():
 def test_pect_tc011_a_003_user_then_clicks_on_the_internal_medicine_link():
     """PECT_TC011_A User then clicks on the Internal Medicine link."""
     global driver
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().our_research
+    mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_our_research_vaccines_link
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=0)
@@ -132,6 +137,11 @@ def test_pect_tc011_b_007_user_navigates_to_our_research_page():
 def test_pect_tc011_b_008_user_clicks_on_the_internal_medicine_link():
     """PECT_TC011_B User then clicks on the Internal Medicine link."""
     global driver
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().our_research
+    mystep = utilities.pect_utils.PECT_Common_Utils()
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
+    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_our_research_vaccines_link
+    driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_internal_medicine_link
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Hover_Over_a_WebElement_and_Click_it(driver, myxpath=myxpath, index_location=0)
@@ -162,7 +172,7 @@ def test_pect_tc011_b_010_user_checks_dislike_button_of_the_page():
 
 
 def teardown():
-    global driver
+    #global driver
     from utilities.screenshot_utils import take_test_screen_shot
     # utilities.take_browser_screenshot.take_full_screenshot(driver, scenario_name=scenario_name)
     take_test_screen_shot(driver, scenario_name=scenario_name)

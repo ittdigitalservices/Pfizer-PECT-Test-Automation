@@ -42,11 +42,14 @@ class PECT_WebElement_Locators:
     pfizer_search_faq_form_field = "//*[@class='form-text form-control']"
     pfizer_faqs_expand_all = "//span[@class='toggle-fqs fq-button' and contains(text(), 'Expand')]"
     pfizer_faqs_collapse_all = "//span[@class='toggle-fqs fq-button collapse' and contains(text(), 'Collapse')]"
-    pfizer_internal_medicine_link = "//*[contains(text(), 'Internal Medicine')]"
+    pfizer_internal_medicine_link = "//*[@href='/our-research/internal_medicine']"
+    #"//*[contains(text(), 'Internal Medicine')]"
     pfizer_internal_medicine_clinical_trials = "//*[contains(text(), 'clinical trials in internal medicine')]"
     internal_medicine_covid = "//span/a[contains(text(), 'COVID')]"
     pfizer_thumbs_up_label = "//*[@class='form-item js-form-item form-type-radio js-form-type-radio form-item-value js-form-item-value rating-label thumbsupdown-rating-label thumbsupdown-rating-label-up']"
     pfizer_thumbs_down_label = "//*[@class='form-item js-form-item form-type-radio js-form-type-radio form-item-value js-form-item-value rating-label thumbsupdown-rating-label thumbsupdown-rating-label-down']"
     pfizer_email = "//*[@id='share-mail' and contains(text(), 'Email')]"
     pfizer_print = "//*[contains(text(), 'Print')]"
+    pfizer_our_research_vaccines_link = "//a[@href='/our-research/vaccines']"
+
 

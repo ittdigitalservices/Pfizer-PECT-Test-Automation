@@ -105,22 +105,32 @@ class MyBrowser:
         xElement = None
         mystep = utilities.action_utils.Driver_Actions()
         if(index_location!=None):
-            driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=index_location)
+            try:
+                driver, xElement = mystep.move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=index_location)
+            except Exception as e00:
+                try:
+                    driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=index_location)
+                except Exception as e01:
+                    pass
             """
             xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
             try:
                 driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElements[int(index_location)])
             except Exception as e0:
                 pass
-
             try:
                 xElement = xElements[int(index_location)]
             except Exception as e1:
                 pass
             """
-
-        elif(index_location==None):
-            driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=None)
+        else:
+            try:
+                driver, xElement = mystep.move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=0)
+            except Exception as e02:
+                try:
+                    driver, xElement = mystep.scroll_and_search_into_view_and_click_element(driver, myxpath=myxpath, index_location=0)
+                except Exception as e03:
+                    pass
             """
             xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
             try:
@@ -157,11 +167,17 @@ class MyBrowser:
 
         try:
             xElement.click()
-            try:
-                xElement.clear()
-            except Exception as e:
-                pass
+        except Exception as e:
+            pass
+
+        try:
+            xElement.clear()
+        except Exception as e:
+            pass
+
+        try:
             xElement.send_keys(mytext)
+            return driver
         except Exception as e3:
             try:
                 print("Hover and send keys to web element failed")
@@ -178,7 +194,8 @@ class MyBrowser:
         mytext = None
 
         try:
-            driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=index_location)
+            #driver, xElement = utilities.action_utils.Driver_Actions().scroll_and_search_into_view_of_element(driver, myxpath=myxpath, index_location=index_location)
+            driver, xElement = utilities.action_utils.Driver_Actions().move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=index_location)
         except Exception as e00:
             pass
 
@@ -188,6 +205,14 @@ class MyBrowser:
             pass
 
         return driver, mytext
+
+
+    def navigate_to_page_end(self, driver):
+        try:
+            utilities.action_utils.Driver_Actions().driver_page_end_action(driver)
+        except Exception as e0:
+            pass
+        return driver
 
 
     def navigate_to_end_of_the_page(self, driver, myxpath, index_location=None):
@@ -207,23 +232,27 @@ class MyBrowser:
 
         elif(index_location==None):
             try:
-                xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
+                xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
+            except Exception as e1:
+                pass
+            try:
+                #xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
+                xElement = xElements[0]
             except Exception as e2:
                 pass
         try:
-            driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
+            utilities.action_utils.Driver_Actions().driver_page_end_action(driver)
         except Exception as e3:
             pass
 
         try:
-            xElement.send_keys(Keys.CONTROL + Keys.END)
-        except Exception as e5:
+            driver = utilities.action_utils.Driver_Actions().move_cursor_to_webelement(driver, xElement)
+        except Exception as e4:
             try:
                 print("Navigating to End of the Page Failed")
                 assert False
-            except Exception as e00:
+            except Exception as e5:
                 return driver
-
         return driver
 
 
