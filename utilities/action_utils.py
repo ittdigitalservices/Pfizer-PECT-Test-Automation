@@ -26,10 +26,36 @@ class Driver_Actions:
                     action.move_to_element(xElement).perform()
                     #action.perform()
                     flag = True
+                    try:
+                        xElement.focus()
+                    except Exception as e000:
+                        pass
                     return driver
                 except Exception as e00:
                     pass
         return driver
+
+
+    def retry_move_cursor_to_webelement_using_xpath(self, driver, myxpath=None, index_location=None):
+        i = 0
+        flag = False
+        mystep = utilities.driver_utils.Common_Actions()
+        for i in range(7):
+            if(flag == False):
+                try:
+                    xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+                except Exception as e0:
+                    break
+                try:
+                    time.sleep(1)
+                    action = ActionChains(driver)
+                    action.move_to_element(xElement).perform()
+                    #action.perform()
+                except Exception as e2:
+                    pass
+        return xElement, flag
+
+
 
     def move_cursor_to_webelement(self, driver, xElement):
         from selenium import webdriver
@@ -40,6 +66,10 @@ class Driver_Actions:
             action.move_to_element(xElement)
             action.perform()
             #action.perform()
+            try:
+                xElement.focus()
+            except Exception as e000:
+                pass
         except Exception as e:
             self.retry_move_cursor_to_webelement(driver, xElement)
             #self.scroll_and_search_into_view_of_xElement(driver, xElement=xElement)
@@ -50,9 +80,10 @@ class Driver_Actions:
         from selenium import webdriver
         from selenium.webdriver import ActionChains
         #self.driver_page_home_action(driver)
-        wait = WebDriverWait(driver, 10)
+        #wait = WebDriverWait(driver, 10)
         xElements = None
         xElement = None
+        """
         if(index_location == None or index_location == 0):
             try:
                 wait.until(expected_conditions.visibility_of_all_elements_located(By.XPATH, myxpath))
@@ -81,25 +112,31 @@ class Driver_Actions:
                 xElement = xElements[int(index_location)]
             except Exception as e3:
                 pass
+        """
+        mystep = utilities.driver_utils.Common_Actions()
+        xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+        if(flag):
+            myX = xElement.location['x']
+            myY = xElement.location['y']
+            size = xElement.size
+            w = size['width']
+            h = size['height']
+            #print(str(myX) + " " + str(myY))
+            #print("Width = " + str(w) + ", Height = " + str(h))
 
-        myX = xElement.location['x']
-        myY = xElement.location['y']
-        size = xElement.size
-        w = size['width']
-        h = size['height']
-        #print(str(myX) + " " + str(myY))
-        #print("Width = " + str(w) + ", Height = " + str(h))
-
-        try:
-            action = ActionChains(driver)
-            action.move_by_offset(int(myX), int(myY)).perform()
-            action.move_to_element(xElement).perform()
-            #action.move_by_offset(myX, myY).perform()
-            #action.perform()
-            #return driver, xElement
-        except Exception as e4:
             try:
-                self.retry_move_cursor_to_webelement(driver, xElement)
+                action = ActionChains(driver)
+                action.move_by_offset(int(myX), int(myY)).perform()
+                action.move_to_element(xElement).perform()
+                #action.move_by_offset(myX, myY).perform()
+                #action.perform()
+                #return driver, xElement
+            except Exception as e4:
+                print("WebElement Focus Failed")
+        else:
+            try:
+                # self.retry_move_cursor_to_webelement(driver, xElement)
+                xElement, flag = self.retry_move_cursor_to_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
             except Exception as e5:
                 pass
         return driver, xElement
@@ -107,10 +144,10 @@ class Driver_Actions:
 
     def move_cursor_to_webelement_by_xpath_and_click_it(self, driver, myxpath=None, index_location=None, counter=1):
         driver, xElement = self.move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=index_location)
-        if (xElement == None):
+        if(xElement != None):
+            self.retry_my_click(driver, xElement=xElement, counter=counter)
+        else:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Hover Over and Click on Object Failed")
-            return driver
-        self.retry_my_click(driver, xElement=xElement, counter=counter)
         return driver
 
 
@@ -205,6 +242,10 @@ class Driver_Actions:
                     action.move_to_element(xElement)
                     action.perform()
                     flag = True
+                    try:
+                        xElement.focus()
+                    except Exception as e000:
+                        pass
                     return driver
                 except Exception as e1:
                     self.driver_page_down_action(driver, my_iterator=1)
@@ -217,9 +258,19 @@ class Driver_Actions:
         wait = WebDriverWait(driver, 10)
         self.driver_page_home_action(driver)
         i = 0
+        mystep = utilities.driver_utils.Common_Actions()
         flag = False
         for i in range(9):
             if(flag == False):
+                try:
+                    xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+                except Exception as e01:
+                    pass
+                if(flag == False):
+                    self.driver_page_down_action(driver, my_iterator=1)
+        return driver, xElement
+
+        """
                 try:
                     if(index_location != None):
                         try:
@@ -249,11 +300,17 @@ class Driver_Actions:
                     action.move_to_element(xElement).perform()
                     #action.perform()
                     flag = True
+                    try:
+                        xElement.focus()
+                    except Exception as e000:
+                        pass
                     #return driver, xElement
                 except Exception as e5:
                     self.driver_page_down_action(driver, my_iterator=1)
                     pass
         return driver, xElement
+        """
+
 
     def scroll_and_search_into_view_and_click_element(self, driver, myxpath=None, index_location=None):
         xElement = None
@@ -261,9 +318,18 @@ class Driver_Actions:
         wait = WebDriverWait(driver, 10)
         self.driver_page_home_action(driver)
         i = 0
+        mystep = utilities.driver_utils.Common_Actions()
         flag = False
         for i in range(9):
             if (flag == False):
+                try:
+                    xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+                except Exception as e01:
+                    pass
+                if(flag == False):
+                    self.driver_page_down_action(driver, my_iterator=1)
+
+                """
                 try:
                     if (index_location == None):
                         try:
@@ -283,25 +349,29 @@ class Driver_Actions:
                             pass
                 except Exception as e0:
                     pass
+                """
                 try:
                     time.sleep(3)
                     action = ActionChains(driver)
-                    action.move_to_element(xElement)
-                    action.perform()
+                    action.move_to_element(xElement).perform()
+                    #action.perform()
                     flag = True
+                    try:
+                        xElement.focus()
+                    except Exception as e000:
+                        pass
                     try:
                         xElement.click()
                     except Exception as e04:
                         self.retry_my_click(driver, xElement=xElement, counter=2)
                     return driver
                 except Exception as e1:
-                    self.driver_page_down_action(driver, my_iterator=1)
-                    pass
-        print("Clicking on the WebElement Failed")
-        try:
-            assert False
-        except Exception as e00:
-            pass
+                    print("Clicking on the WebElement Failed")
+        if(flag == False):
+            try:
+                assert False
+            except Exception as e00:
+                pass
         return driver
 
 
@@ -341,10 +411,18 @@ class Driver_Actions:
                     action.move_to_element(xElement)
                     action.perform()
                     flag = True
+                    try:
+                        xElement.focus()
+                    except Exception as e000:
+                        pass
                     return driver, xElement
                 except Exception as e1:
                     self.driver_page_down_action(driver, my_iterator=1)
 
+        return driver, xElement
+
+    def set_focus_on_the_webelement_using_xpath(self, driver, myxpath=None, index_location=None):
+        driver, xElement = self.move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=index_location)
         return driver, xElement
 
 

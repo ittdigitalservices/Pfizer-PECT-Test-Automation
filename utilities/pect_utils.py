@@ -494,7 +494,7 @@ class PECT_Common_Utils:
                 pass
 
         try:
-            time.sleep(3)
+            time.sleep(1)
             driver = utilities.driver_utils.Common_Actions().move_mouse_cursor_to_webelement(driver, xElement)
         except Exception as e04:
             utilities.action_utils.Test_Actions().mark_test_step_as_failed("Curzor Movement to WebElement Failed")
@@ -519,3 +519,8 @@ class PECT_Common_Utils:
             assert False
         return driver, mycount
 
+
+    def PECT_Set_Focus_on_the_WebElement_using_xpath(self, driver, myxpath=None, index_location=None):
+        mystep = utilities.action_utils.Driver_Actions()
+        driver, xElement = mystep.set_focus_on_the_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+        return driver, xElement

@@ -20,8 +20,8 @@ class Common_Actions:
                 try:
                     time.sleep(1)
                     action = ActionChains(driver)
-                    action.move_to_element(xElement)
-                    action.perform()
+                    action.move_to_element(xElement).perform()
+                    #action.perform()
                     flag = True
                     #return driver
                 except Exception as e00:
@@ -52,11 +52,11 @@ class Common_Actions:
     def move_mouse_cursor_to_webelement(self, driver, xElement):
         from selenium import webdriver
         from selenium.webdriver import ActionChains
-        wait = WebDriverWait(driver, 10)
+        #wait = WebDriverWait(driver, 10)
         #utilities.action_utils.Driver_Actions().driver_page_home_action(driver)
         #self.driver_page_home_action(driver)
         try:
-            time.sleep(3)
+            time.sleep(1)
             myX = xElement.location['x']
             myY = xElement.location['y']
             size = xElement.size
@@ -87,3 +87,34 @@ class Common_Actions:
             pass
 
         return driver
+
+
+    def check_webelement_existence_using_xpath(self, driver, myxpath=None, index_location=None):
+        xElements = None
+        xElement = None
+        try:
+            time.sleep(1)
+            xElements = driver.find_elements_by_xpath(myxpath)
+        except Exception as e0:
+            pass
+
+        if((index_location != None) and (len(xElements) != 0)):
+            try:
+                xElement = xElements[int(index_location)]
+                return xElement, True
+            except Exception as e1:
+                return None, False
+        else:
+            try:
+                xElement = xElements[0]
+                if(xElement != None):
+                    return xElement, True
+                else:
+                    try:
+                        xElement = driver.find_element_by_xpath(myxpath)
+                        if(xElement != None):
+                            return xElement, True
+                    except Exception as e2:
+                        return None, False
+            except Exception as e3:
+                return None, False

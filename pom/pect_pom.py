@@ -51,5 +51,9 @@ class PECT_WebElement_Locators:
     pfizer_email = "//*[@id='share-mail' and contains(text(), 'Email')]"
     pfizer_print = "//*[contains(text(), 'Print')]"
     pfizer_our_research_vaccines_link = "//a[@href='/our-research/vaccines']"
+    pfizer_for_participants = "//*[contains(text(), 'For participants')]"
+    pfizer_for_past_clinical_trial_participants_link = "//a[@href='/for-past-clinical-trial-participants']"
+    pfizer_for_current_clinical_trial_participants_link = "//a[@href='/for-current-clinical-trial-participants']"
+    pfizer_download_checklist_pdf = "//*[contains(text(), 'Download')]"
 
 
