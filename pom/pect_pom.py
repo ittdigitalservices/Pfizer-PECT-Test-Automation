@@ -55,5 +55,6 @@ class PECT_WebElement_Locators:
     pfizer_for_past_clinical_trial_participants_link = "//a[@href='/for-past-clinical-trial-participants']"
     pfizer_for_current_clinical_trial_participants_link = "//a[@href='/for-current-clinical-trial-participants']"
     pfizer_download_checklist_pdf = "//*[contains(text(), 'Download')]"
+    pfizer_back_to_top = "//*[contains(text(), 'Back to top')]"
 
 

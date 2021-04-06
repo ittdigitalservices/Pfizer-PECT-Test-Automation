@@ -33,7 +33,7 @@ scenario_name = "PECT_TC013_A_User_accesses_Clinical_Trial_Participants_and_veri
 
 @pytest.mark.order(1)
 @scenario(feature_name=feature_name, scenario_name=scenario_name)
-def pect_tc013_a_001_user_accesses_clinical_trial_participants_and_verifies_download_option():
+def pect_tc013_a_001_accesses_clinical_trial_participants_and_download_option():
     """PECT_TC013_A_User_accesses_Clinical_Trial_Participants_and_verifies_Download_option."""
     print("PECT-TEST013-SCENARIO-A")
     return
@@ -62,13 +62,13 @@ def test_pect_tc013_a_002_user_navigates_to_for_participants():
 
 @pytest.mark.order(3)
 @then('PECT_TC013_A User then clicks on the For Current Clinical Trial participants link')
-def test_pect_tc013_a_003_user_then_clicks_on_the_for_current_clinical_trial_participants_link():
+def test_pect_tc013_a_003_user_clicks_current_clinical_trial_participants():
     """User then clicks on the For Current Clinical Trial participants link."""
     global driver
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_for_participants
     mystep = utilities.pect_utils.PECT_Common_Utils()
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
-    myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_for_past_clinical_trial_participants_link
+    #myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_for_past_clinical_trial_participants_link
     #driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
     time.sleep(1)
     myxpath = pom.pect_pom.PECT_WebElement_Locators().pfizer_for_current_clinical_trial_participants_link
@@ -79,7 +79,7 @@ def test_pect_tc013_a_003_user_then_clicks_on_the_for_current_clinical_trial_par
 
 @pytest.mark.order(4)
 @then('PECT_TC013_A User then checks the Download Option presence in the landing page')
-def test_pect_tc013_a_004_user_then_checks_the_download_option_presence_in_the_landing_page():
+def test_pect_tc013_a_004_user_checks_download_option_in_landing_page():
     """User then checks the Download Option presence in the landing page."""
     global driver
     mystep = utilities.pect_utils.PECT_Common_Utils()
