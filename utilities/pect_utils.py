@@ -1,5 +1,6 @@
 import time
 
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common import keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -524,3 +525,58 @@ class PECT_Common_Utils:
         mystep = utilities.action_utils.Driver_Actions()
         driver, xElement = mystep.set_focus_on_the_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
         return driver, xElement
+
+    def PECT_Send_Keys_to_WebElement_using_xpath(self, driver, myxpath=None, index_location=None, myText=None):
+        ##mystep = utilities.action_utils.Driver_Actions()
+        ##driver, xElement = mystep.set_focus_on_the_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+        xElements = None
+        xElement = None
+        time.sleep(3)
+        try:
+            try:
+                xElements = driver.find_elements_by_xpath(myxpath)
+            except Exception as ea1:
+                pass
+
+            try:
+                xElement = xElements[int(index_location)]
+            except Exception as ea2:
+                xElement = xElements[0]
+                pass
+
+            if(xElement != None):
+                try:
+                    xElement.click()
+                except Exception as e0:
+                    try:
+                        xElement = xElements[1]
+                        xElement.click()
+                    except Exception as e00:
+                        pass
+
+                try:
+                    xElement.clear()
+                except Exception as e1:
+                    pass
+
+                try:
+                    action = ActionChains(driver)
+                    action.move_to_element(to_element=xElement).perform()
+                    ##action.double_click().perform()
+                    action.click(on_element=xElement).perform()
+                    action.send_keys(myText).perform()
+                    action.perform()
+                    xElement.send_keys(myText)
+                except Exception as e2:
+                    message = "\nSending Text: " + str(myText) + " To WebElement Failed\n"
+                    utilities.action_utils.Test_Actions().mark_test_step_as_failed(message)
+                return driver
+            else:
+                message = "\nSending Text: " + str(myText) + " To WebElement Failed\n"
+                utilities.action_utils.Test_Actions().mark_test_step_as_failed(message)
+        except Exception as e000:
+            pass
+        return driver
+
+
+

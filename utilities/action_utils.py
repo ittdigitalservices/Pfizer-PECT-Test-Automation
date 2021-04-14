@@ -83,6 +83,34 @@ class Driver_Actions:
         #wait = WebDriverWait(driver, 10)
         xElements = None
         xElement = None
+        mystep = utilities.driver_utils.Common_Actions()
+        xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+        if(flag):
+            myX = xElement.location['x']
+            myY = xElement.location['y']
+            size = xElement.size
+            w = size['width']
+            h = size['height']
+            #print(str(myX) + " " + str(myY))
+            #print("Width = " + str(w) + ", Height = " + str(h))
+
+            try:
+                action = ActionChains(driver)
+                action.move_by_offset(int(myX), int(myY)).perform()
+                action.move_to_element(xElement).perform()
+                #action.move_by_offset(myX, myY).perform()
+                #action.perform()
+                #return driver, xElement
+            except Exception as e4:
+                print("WebElement Focus Failed")
+        else:
+            try:
+                # self.retry_move_cursor_to_webelement(driver, xElement)
+                xElement, flag = self.retry_move_cursor_to_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
+            except Exception as e5:
+                pass
+        return driver, xElement
+
         """
         if(index_location == None or index_location == 0):
             try:
@@ -113,36 +141,10 @@ class Driver_Actions:
             except Exception as e3:
                 pass
         """
-        mystep = utilities.driver_utils.Common_Actions()
-        xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
-        if(flag):
-            myX = xElement.location['x']
-            myY = xElement.location['y']
-            size = xElement.size
-            w = size['width']
-            h = size['height']
-            #print(str(myX) + " " + str(myY))
-            #print("Width = " + str(w) + ", Height = " + str(h))
-
-            try:
-                action = ActionChains(driver)
-                action.move_by_offset(int(myX), int(myY)).perform()
-                action.move_to_element(xElement).perform()
-                #action.move_by_offset(myX, myY).perform()
-                #action.perform()
-                #return driver, xElement
-            except Exception as e4:
-                print("WebElement Focus Failed")
-        else:
-            try:
-                # self.retry_move_cursor_to_webelement(driver, xElement)
-                xElement, flag = self.retry_move_cursor_to_webelement_using_xpath(driver, myxpath=myxpath, index_location=index_location)
-            except Exception as e5:
-                pass
-        return driver, xElement
-
 
     def move_cursor_to_webelement_by_xpath_and_click_it(self, driver, myxpath=None, index_location=None, counter=1):
+        if(index_location == None):
+            index_location = 0
         driver, xElement = self.move_cursor_to_webelement_by_xpath(driver, myxpath=myxpath, index_location=index_location)
         if(xElement != None):
             self.retry_my_click(driver, xElement=xElement, counter=counter)

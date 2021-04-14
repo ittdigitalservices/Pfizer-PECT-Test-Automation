@@ -98,7 +98,7 @@ class Common_Actions:
         except Exception as e0:
             pass
 
-        if((index_location != None) and (len(xElements) != 0)):
+        if((index_location != None) and (xElements != None)):
             try:
                 xElement = xElements[int(index_location)]
                 return xElement, True
@@ -118,3 +118,62 @@ class Common_Actions:
                         return None, False
             except Exception as e3:
                 return None, False
+
+    def send_double_click_actions(self, driver, myxpath=None, index_location=0):
+        xElements = None
+        xElement = None
+
+        try:
+            xElements = driver.find_elements_by_xpath(myxpath)
+        except Exception as e01:
+            pass
+
+        try:
+            xElement = xElements[int(index_location)]
+        except Exception as e02:
+            pass
+
+        try:
+            action = ActionChains(driver)
+            action.double_click(on_element=xElement)
+            action.perform()
+
+        except Exception as e03:
+            pass
+
+        return driver
+
+
+    def send_Tab_Keys_using_driver_actions(self, driver, counter=1):
+        i = 0
+        for i in range(counter):
+            try:
+                action = ActionChains(driver)
+                action.send_keys(Keys.TAB)
+                action.perform()
+
+            except Exception as e00:
+                pass
+
+        return driver
+
+
+    def send_Data_using_driver_actions(self, driver, mydata=None):
+        try:
+            action = ActionChains(driver)
+            action.send_keys(mydata)
+            action.perform()
+
+        except Exception as e00:
+            pass
+        return driver
+
+    def perform_Enter_using_driver_actions(self, driver):
+        try:
+            action = ActionChains(driver)
+            action.send_keys(Keys.ENTER)
+            action.perform()
+
+        except Exception as e00:
+            pass
+        return driver

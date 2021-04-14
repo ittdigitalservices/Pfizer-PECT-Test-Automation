@@ -144,8 +144,11 @@ class MyBrowser:
     def hover_and_send_keys_to_web_element(self, driver, myxpath, index_location=None, mytext=None):
         xElements = None
         xElement = None
+        #flag = False
+        #mystep = utilities.driver_utils.Common_Actions()
         if(index_location!=None):
             try:
+                #xElements, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=index_location)
                 xElements = utilities.web_utils.Global_Utils().find_visible_webelements_by_xpath(driver, myxpath)
             except Exception as e0:
                 pass
@@ -157,6 +160,7 @@ class MyBrowser:
 
         elif(index_location==None):
             try:
+                #xElement, flag = mystep.check_webelement_existence_using_xpath(driver, myxpath=myxpath, index_location=0)
                 xElement = utilities.web_utils.Global_Utils().find_visible_webelement_by_xpath(driver, myxpath)
             except Exception as e0:
                 pass
@@ -182,7 +186,7 @@ class MyBrowser:
             try:
                 print("Hover and send keys to web element failed")
                 assert False
-            except Exception as e1:
+            except Exception as ee:
                 return driver
 
         return driver

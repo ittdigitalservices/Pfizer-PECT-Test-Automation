@@ -11,3 +11,8 @@ pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --allu
 pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC010.py
 pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC011.py
 pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC012.py
+pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC013.py
+pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC014.py
+pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC015.py
+pytest -vvv -s -n0 --screenshot=on --screenshot_path=./result/screenshot/ --alluredir=./result ./tests/steps/test_PECT_TC016.py
+

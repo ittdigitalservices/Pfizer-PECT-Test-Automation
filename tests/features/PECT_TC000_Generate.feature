@@ -3,11 +3,14 @@
 # Author: ITTDigital
 #
 @PECT_TC000
-Feature: User navigates For Current Clinical Trial Participants and checks URL route
+Feature: User navigates For Pfizer Clinical Trial and searches for a Trial
 
-  Scenario: PECT_TC015_A_User_accesses_Current_Clinical_Trial_Participants_and_checks_URL_route
-    Given PECT_TC015_A User Access the Pfizer Eclinical Trial Application Portal
-    Then PECT_TC015_A User navigates to For Participants
-    Then PECT_TC015_A User then clicks on the For Current Clinical Trial participants link
-    Then PECT_TC015_A User then checks URL route
+  Scenario: PECT_TC016_C_User_accesses_Pfizer_Clinical_Trial_and_Trial_Search_Result_content
+    Given PECT_TC016_C User Access the Pfizer Eclinical Trial Application Portal
+    Then PECT_TC016_C User navigates to Find a Trial option at the Top and clicks it
+    Then PECT_TC016_C User then accesses Search for a Pfizer clinical trial section
+    Then PECT_TC016_C User then enters or populates the search value
+    Then PECT_TC016_C User then enters or populates the location value
+    Then PECT_TC016_C User then clicks on the Find a trial button
+    Then PECT_TC016_C User then access the searched page contents
 

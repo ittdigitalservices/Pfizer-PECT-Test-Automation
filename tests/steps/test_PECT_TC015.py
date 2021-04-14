@@ -10,7 +10,8 @@ from pytest_bdd import (
     then,
     when,
 )
-
+#from pytest_testrail.plugin import pytestrail
+#from pytest_pytestrail import pytestrail
 
 import pom
 import utilities
@@ -21,6 +22,7 @@ global my_main_url
 driver = utilities.browser_utils.MyBrowser().get_browser()
 driver = utilities.browser_utils.MyBrowser().navigate_to_url(driver)
 
+#case = pytestrail.steps_case("C2568")
 
 def setup():
     global driver
@@ -37,10 +39,12 @@ scenario_name = "PECT_TC015_A_User_accesses_Current_Clinical_Trial_Participants_
 @scenario(feature_name=feature_name, scenario_name=scenario_name)
 def pect_tc015_a_001_current_clinical_trial_participants_and_checks_url():
     """PECT_TC015_A_User_accesses_Current_Clinical_Trial_Participants_and_checks_URL_route."""
-    print("PECT-TEST015-SCENARIO-B")
+    print("PECT-TEST015-SCENARIO-A")
     return
 
 
+#@pytestrail.case('CPECT-TEST015-SCENARIO-A-001')
+#@case.step(1)
 @pytest.mark.order(1)
 @when('PECT_TC015_A User Access the Pfizer Eclinical Trial Application Portal')
 def test_pect_tc015_a_001_user_access_pfizer_eclinical_trial_portal():
@@ -54,6 +58,8 @@ def test_pect_tc015_a_001_user_access_pfizer_eclinical_trial_portal():
     my_main_url = driver.current_url
 
 
+#@pytestrail.case('PECT-TEST015-SCENARIO-A-002')
+#@case.step(2)
 @pytest.mark.order(2)
 @then('PECT_TC015_A User navigates to For Participants')
 def test_pect_tc015_a_002_user_navigates_to_for_participants():
@@ -64,6 +70,8 @@ def test_pect_tc015_a_002_user_navigates_to_for_participants():
     driver = mystep.PECT_Hover_Over_a_WebElement(driver, myxpath=myxpath, index_location=0)
 
 
+#@pytestrail.case('PECT-TEST015-SCENARIO-A-003')
+#@case.step(3)
 @pytest.mark.order(3)
 @then('PECT_TC015_A User then clicks on the For Current Clinical Trial participants link')
 def test_pect_tc015_a_003_clicks_current_clinical_trial_participants():
@@ -78,6 +86,8 @@ def test_pect_tc015_a_003_clicks_current_clinical_trial_participants():
     time.sleep(1)
 
 
+#@pytestrail.case('PECT-TEST015-SCENARIO-A-004')
+#@case.step(4)
 @pytest.mark.order(4)
 @then('PECT_TC015_A User then checks URL route')
 def test_pect_tc015_a_004_user_then_checks_url_route():
