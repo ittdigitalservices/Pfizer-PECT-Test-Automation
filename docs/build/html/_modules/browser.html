@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>browser &mdash; Pfizer Eclinical Test Trails 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Pfizer Eclinical Test Trails
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pfizer Eclinical Test Trails</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>browser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for browser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.remote.webdriver</span> <span class="kn">import</span> <span class="n">WebDriver</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="BrowserActions"><a class="viewcode-back" href="../index.html#browser.BrowserActions">[docs]</a><span class="k">class</span> <span class="nc">BrowserActions</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for all BrowserActions that can be performed on a webpage or webdriver.</span>
+<span class="sd">    It contains all the methods which are associated with browsers</span>
+
+<span class="sd">    :class: `browseractions`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor of the class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="p">:</span> <span class="n">WebDriver</span> <span class="o">=</span> <span class="n">driver</span>
+
+<div class="viewcode-block" id="BrowserActions.get_current_url"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_current_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the current url of the webpage</span>
+
+<span class="sd">        :return: url (String)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">current_url</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Current URL is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">current_url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">current_url</span></div>
+
+<div class="viewcode-block" id="BrowserActions.get_title"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_title">[docs]</a>    <span class="k">def</span> <span class="nf">get_title</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current browser/tab title in string</span>
+
+<span class="sd">        :return: title (String)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">title</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Current title is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">title</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">title</span></div>
+
+<div class="viewcode-block" id="BrowserActions.get_current_tab_name"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_current_tab_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_tab_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current tab&#39;s name through windows handle</span>
+
+<span class="sd">        :return: tab name (String)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">window_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">current_window_handle</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Current window handle is: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">window_handle</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">window_handle</span></div>
+
+<div class="viewcode-block" id="BrowserActions.get_page_source"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_page_source">[docs]</a>    <span class="k">def</span> <span class="nf">get_page_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the complete page source o the current page.</span>
+
+<span class="sd">        :return: page source (String)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">page_source</span></div>
+
+<div class="viewcode-block" id="BrowserActions.get_number_of_tabs"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_number_of_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of tabs currently opened</span>
+
+<span class="sd">        :return: no of tabs (String)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_tabs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of tabs: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_tabs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">num_tabs</span></div>
+
+<div class="viewcode-block" id="BrowserActions.get_tab_list"><a class="viewcode-back" href="../index.html#browser.BrowserActions.get_tab_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_tab_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the currently opened tabs in list</span>
+
+<span class="sd">        :return: list of currently opened tabs (List)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tab_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">window_handles</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;List of window handles </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">tab_list</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tab_list</span></div>
+
+<div class="viewcode-block" id="BrowserActions.switch_to_tab_index"><a class="viewcode-back" href="../index.html#browser.BrowserActions.switch_to_tab_index">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_tab_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Switch to tab using index of that tab</span>
+
+<span class="sd">        :param: index : index_of the_tab (int)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tab_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;About to switch to tab: &quot;</span><span class="p">,</span> <span class="n">tab_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_tab</span><span class="p">(</span><span class="n">tab_name</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Switched to new tab at index: </span><span class="si">%s</span><span class="s2"> successfully&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.switch_to_tab"><a class="viewcode-back" href="../index.html#browser.BrowserActions.switch_to_tab">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tab_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Switch to a tab using the name of the window</span>
+
+<span class="sd">        :param: tab_name: name_of_window/tab (String)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">switch_to</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">tab_name</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Switched to new tab: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">tab_name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.close_current_tab"><a class="viewcode-back" href="../index.html#browser.BrowserActions.close_current_tab">[docs]</a>    <span class="k">def</span> <span class="nf">close_current_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        To close the current opened tab</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Current tab closed&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BrowserActions.close_tab_at_index"><a class="viewcode-back" href="../index.html#browser.BrowserActions.close_tab_at_index">[docs]</a>    <span class="k">def</span> <span class="nf">close_tab_at_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the tab/window at a given index position</span>
+
+<span class="sd">        :param index: index_of_window/tab (int)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_tab_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Closed the tab at index </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.close_tab"><a class="viewcode-back" href="../index.html#browser.BrowserActions.close_tab">[docs]</a>    <span class="k">def</span> <span class="nf">close_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Closing the tab/window by passing the name of window/tab</span>
+
+<span class="sd">        :param name: name_of_window/tab (String)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_tab</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Closed the tab: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.navigate_back"><a class="viewcode-back" href="../index.html#browser.BrowserActions.navigate_back">[docs]</a>    <span class="k">def</span> <span class="nf">navigate_back</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Navigated to previous page</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">back</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Navigated to previous page&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BrowserActions.refresh"><a class="viewcode-back" href="../index.html#browser.BrowserActions.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refresh the current page</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Page refresh successful&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BrowserActions.resize_to"><a class="viewcode-back" href="../index.html#browser.BrowserActions.resize_to">[docs]</a>    <span class="k">def</span> <span class="nf">resize_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resize the window to the given width and height</span>
+
+<span class="sd">        :param width: integer</span>
+<span class="sd">        :param height: integer</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">set_window_size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Window size set to width: </span><span class="si">%s</span><span class="s2">, height: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.go_to_url"><a class="viewcode-back" href="../index.html#browser.BrowserActions.go_to_url">[docs]</a>    <span class="k">def</span> <span class="nf">go_to_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Navigate to the given URL</span>
+
+<span class="sd">        :param url: String</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Navigated to URL: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BrowserActions.go_to_protected_url"><a class="viewcode-back" href="../index.html#browser.BrowserActions.go_to_protected_url">[docs]</a>    <span class="k">def</span> <span class="nf">go_to_protected_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opening the protected url page.</span>
+
+<span class="sd">        :param full_url: url_of_the_page (String)</span>
+<span class="sd">        :param username: username_to_login (String)</span>
+<span class="sd">        :param password: password_to_login (String)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">https</span> <span class="o">=</span> <span class="s2">&quot;https://&quot;</span>
+        <span class="n">http</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span>
+
+        <span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">full_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">https</span><span class="p">):</span>
+            <span class="n">protocol</span> <span class="o">=</span> <span class="n">https</span>
+        <span class="k">elif</span> <span class="n">full_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">http</span><span class="p">):</span>
+            <span class="n">protocol</span> <span class="o">=</span> <span class="n">http</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">full_url</span>
+        <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">full_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">protocol</span><span class="si">}{</span><span class="n">username</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s1">@</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ITT Digital.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

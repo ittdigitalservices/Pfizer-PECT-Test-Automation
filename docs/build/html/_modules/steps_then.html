@@ -1,0 +1,777 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>steps_then &mdash; Pfizer Eclinical Test Trails 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Pfizer Eclinical Test Trails
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pfizer Eclinical Test Trails</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>steps_then</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for steps_then</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">assertpy</span> <span class="kn">import</span> <span class="n">assert_that</span>
+<span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">then</span><span class="p">,</span> <span class="n">parsers</span>
+<span class="kn">from</span> <span class="nn">pytest_selenium_enhancer</span> <span class="kn">import</span> <span class="n">CustomWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+
+<span class="kn">from</span> <span class="nn">page_objects.selenium_generics</span> <span class="kn">import</span> <span class="n">SeleniumGenerics</span>
+<span class="kn">from</span> <span class="nn">utils.locators</span> <span class="kn">import</span> <span class="n">Locators</span>
+
+
+<div class="viewcode-block" id="check_title_is"><a class="viewcode-back" href="../index.html#steps_then.check_title_is">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that the title is &#39;(?P&lt;title&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_title_is</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the title of the page is expected one</span>
+
+<span class="sd">    :param title: tile_of_the_page_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">title</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_title_is_not"><a class="viewcode-back" href="../index.html#steps_then.check_title_is_not">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that the title is not &#39;(?P&lt;title&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_title_is_not</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the title of the page is not expected one</span>
+
+<span class="sd">    :param title: tile_of_the_page_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">title</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_title_contains"><a class="viewcode-back" href="../index.html#steps_then.check_title_contains">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that the title contains &#39;(?P&lt;title&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_title_contains</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the title of the page contains the given title/string</span>
+
+<span class="sd">    :param title: partial_string/title_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">title</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_title_not_contains"><a class="viewcode-back" href="../index.html#steps_then.check_title_not_contains">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that the title does not contain &#39;(?P&lt;title&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_title_not_contains</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To Validate the title of the page not contains the given title/string</span>
+
+<span class="sd">    :param title: partial_string/title_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">does_not_contain</span><span class="p">(</span><span class="n">title</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_element_exists"><a class="viewcode-back" href="../index.html#steps_then.check_element_exists">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; appears exactly &#39;(?P&lt;occurrence_count&gt;.*)&#39; times&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_exists</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">occurrence_count</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element occurrences count  in a webpage is equal</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param occurrence_count: occurrence_count</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)))</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">occurrence_count</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_element_not_exists"><a class="viewcode-back" href="../index.html#steps_then.check_element_not_exists">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; does not appear exactly &#39;(?P&lt;occurrence_count&gt;.*)&#39; times&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_exists</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">occurrence_count</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element occurrences count  in a webpage is not equal</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param occurrence_count: occurrence_count</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)))</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">occurrence_count</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="element_displayed"><a class="viewcode-back" href="../index.html#steps_then.element_displayed">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; is displayed&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">element_displayed</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element is displayed</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">())</span><span class="o">.</span><span class="n">is_true</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="element_not_displayed"><a class="viewcode-back" href="../index.html#steps_then.element_not_displayed">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; is not displayed&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">element_not_displayed</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element is not displayed</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">())</span><span class="o">.</span><span class="n">is_false</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="wait_for_displayed"><a class="viewcode-back" href="../index.html#steps_then.wait_for_displayed">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; becomes visible&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">wait_for_displayed</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element becomes visible after some custom wait time</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="wait_for_not_displayed"><a class="viewcode-back" href="../index.html#steps_then.wait_for_not_displayed">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; becomes invisible&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">wait_for_not_displayed</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element becomes invisible after some custom wait time</span>
+
+<span class="sd">    :param locator_path:locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_not_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span></div>
+
+
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; is within the viewport&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_within_viewport</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element is within the viewport</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span><span class="o">.</span><span class="n">is_in_viewport</span><span class="p">())</span><span class="o">.</span><span class="n">is_true</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="check_within_viewport"><a class="viewcode-back" href="../index.html#steps_then.check_within_viewport">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; is not within the viewport&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_within_viewport</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element is not within the viewport</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span><span class="o">.</span><span class="n">is_in_viewport</span><span class="p">())</span><span class="o">.</span><span class="n">is_false</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_is_existing"><a class="viewcode-back" href="../index.html#steps_then.check_is_existing">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; exists&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_is_existing</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element exists in a webpage DOM</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_present</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_element_not_existing"><a class="viewcode-back" href="../index.html#steps_then.check_element_not_existing">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path&gt;.*)&#39; does not exist&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_existing</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the element not exists in a webpage DOM</span>
+
+<span class="sd">    :param locator_path:</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_not_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_contains_same_text"><a class="viewcode-back" href="../index.html#steps_then.check_contains_same_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path1&gt;.*)&#39; contains the same text as element&#39;(?P&lt;locator_path2&gt;.*)&#39;$&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_contains_same_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path1</span><span class="p">,</span> <span class="n">locator_path2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the text of two web element in a webpage is same</span>
+
+<span class="sd">    :param locator_path1: locator_of_the_element1</span>
+<span class="sd">    :param locator_path2: locator_of_the_element2</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text1</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path1</span><span class="p">))</span>
+    <span class="n">actual_text2</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path2</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text1</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">actual_text2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_does_not_contain_same_text"><a class="viewcode-back" href="../index.html#steps_then.check_does_not_contain_same_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect that element &#39;(?P&lt;locator_path1&gt;.*)&#39; does not contain the same text as element&#39;(?P&lt;locator_path2&gt;.*)&#39;$&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_does_not_contain_same_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path1</span><span class="p">,</span> <span class="n">locator_path2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the text of two web element in a webpage is not same</span>
+
+<span class="sd">    :param locator_path1: locator_of_the_element1</span>
+<span class="sd">    :param locator_path2: locator_of_the_element2</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text1</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path1</span><span class="p">))</span>
+    <span class="n">actual_text2</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path2</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text1</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">actual_text2</span><span class="p">)</span></div>
+
+
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; text is &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; text is &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_equals_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the text of a button/element is an expected text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; text is not &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; text is not &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_equals_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To validate the text of a button/element is not an expected text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_element_equals_text"><a class="viewcode-back" href="../index.html#steps_then.check_element_equals_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The trimmed text on button &#39;(?P&lt;locator_path&gt;.*)&#39; is &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The trimmed text on element &#39;(?P&lt;locator_path&gt;.*)&#39; is &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_equals_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the text of a button/element with given text is equal after removing the leading and trailing whitespace</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_element_not_equals_text"><a class="viewcode-back" href="../index.html#steps_then.check_element_not_equals_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The trimmed text on button &#39;(?P&lt;locator_path&gt;.*)&#39; is not &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The trimmed text on element &#39;(?P&lt;locator_path&gt;.*)&#39; is not &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_equals_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the text of a button/element with given text is not equal after removing the leading and trailing whitespace</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_contains_text"><a class="viewcode-back" href="../index.html#steps_then.check_contains_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; contains the text &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; contains the text &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_contains_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the button/element text is equal to the given text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_not_contains_text"><a class="viewcode-back" href="../index.html#steps_then.check_not_contains_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; does not contain the text &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; does not contain the text &#39;(?P&lt;text&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_not_contains_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the button/element text is not equal to the given text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">does_not_contain</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_contains_no_text"><a class="viewcode-back" href="../index.html#steps_then.check_contains_no_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; does not contain any text&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; does not contain any text&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_contains_no_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the button/element text is not containing any text</span>
+
+<span class="sd">    :param locator_path:locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_contains_any_text"><a class="viewcode-back" href="../index.html#steps_then.check_contains_any_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The button &#39;(?P&lt;locator_path&gt;.*)&#39; contains any text&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; contains any text&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_contains_any_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the button/element text is containing some text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_text_from_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_text</span><span class="p">)</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.*?)&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_page_url"><a class="viewcode-back" href="../index.html#steps_then.check_page_url">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page url is &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_page_url</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the current page URL is given URL</span>
+
+<span class="sd">    :param url: url_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_page_url_is_not"><a class="viewcode-back" href="../index.html#steps_then.check_page_url_is_not">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page url is not &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_page_url_is_not</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the current page URL is not given URL</span>
+
+<span class="sd">    :param url: url_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_page_url_contains"><a class="viewcode-back" href="../index.html#steps_then.check_page_url_contains">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page path is &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page url contains &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_page_url_contains</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the current page URL contains the given URL path</span>
+
+<span class="sd">    :param url: url_path_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_page_url_not_contains"><a class="viewcode-back" href="../index.html#steps_then.check_page_url_not_contains">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page path is not &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The page url does not contain &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_page_url_not_contains</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the current page URL not contains the given URL path</span>
+
+<span class="sd">    :param url: url_path_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">does_not_contain</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_property_is"><a class="viewcode-back" href="../index.html#steps_then.check_property_is">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The attribute &#39;(?P&lt;attribute&gt;.*)&#39; of element &#39;(?P&lt;locator_path&gt;.*)&#39; is &#39;(?P&lt;value&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_property_is</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the attribute value of an element is equal to</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param value: value_of_attribute_to_validate</span>
+<span class="sd">    :param attribute: name_of_the_attribute</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_value</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_attribute_of_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">),</span> <span class="n">attribute</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_value</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_property_is_not"><a class="viewcode-back" href="../index.html#steps_then.check_property_is_not">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The attribute &#39;(?P&lt;attribute&gt;.*)&#39; of element &#39;(?P&lt;locator_path&gt;.*)&#39; is not &#39;(?P&lt;value&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_property_is_not</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the attribute value o an element is not equal to</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param value: value_of_attribute_to_validate</span>
+<span class="sd">    :param attribute: name_of_the_attribute</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_value</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_attribute_of_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">),</span> <span class="n">attribute</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_value</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_css_property_is"><a class="viewcode-back" href="../index.html#steps_then.check_css_property_is">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The css attribute &#39;(?P&lt;attribute&gt;.*)&#39; of element &#39;(?P&lt;locator_path&gt;.*)&#39; is &#39;(?P&lt;value&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_css_property_is</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the CSS attribute value of an element is equal to</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param value: value_of_attribute_to_validate</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_value</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_css_attribute_of_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">),</span> <span class="n">attribute</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_value</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_css_property_is_not"><a class="viewcode-back" href="../index.html#steps_then.check_css_property_is_not">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The css attribute &#39;(?P&lt;attribute&gt;.*)&#39; of element &#39;(?P&lt;locator_path&gt;.*)&#39; is not &#39;(?P&lt;value&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_css_property_is_not</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the CSS attribute value of an element is not equal to</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param value: value_of_attribute_to_validate</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_value</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_css_attribute_of_element</span><span class="p">(</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">),</span> <span class="n">attribute</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">actual_value</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_element_selected"><a class="viewcode-back" href="../index.html#steps_then.check_element_selected">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; is selected&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_selected</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the element is selected</span>
+
+<span class="sd">    :param locator_path:locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locator</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span><span class="o">.</span><span class="n">is_selected</span><span class="p">())</span><span class="o">.</span><span class="n">is_true</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_element_not_selected"><a class="viewcode-back" href="../index.html#steps_then.check_element_not_selected">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; is not selected&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_selected</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the element is not selected</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locator</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span><span class="o">.</span><span class="n">is_selected</span><span class="p">())</span><span class="o">.</span><span class="n">is_false</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_element_enabled"><a class="viewcode-back" href="../index.html#steps_then.check_element_enabled">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; is enabled&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_enabled</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the element is enabled</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locator</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">())</span><span class="o">.</span><span class="n">is_true</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_element_not_enabled"><a class="viewcode-back" href="../index.html#steps_then.check_element_not_enabled">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The element &#39;(?P&lt;locator_path&gt;.*)&#39; is not enabled&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_element_not_enabled</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the element is not enabled</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locator</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">locator</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">())</span><span class="o">.</span><span class="n">is_false</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_is_opened_in_new_window"><a class="viewcode-back" href="../index.html#steps_then.check_is_opened_in_new_window">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The url &#39;(?P&lt;url&gt;.*)&#39; is opened in a new tab&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;The url &#39;(?P&lt;url&gt;.*)&#39; is opened in a new window&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_is_opened_in_new_window</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the given URL is opened in a new tab/window</span>
+
+<span class="sd">    :param url: url_to_open</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">windows</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_modal"><a class="viewcode-back" href="../index.html#steps_then.check_modal">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A alertbox is opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A confirmbox is opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A prompt is opened&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_modal</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating an alertbox/confirmbox/prompt box is opened</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">alert_is_present</span><span class="p">())</span><span class="o">.</span><span class="n">is_true</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_modal_not_present"><a class="viewcode-back" href="../index.html#steps_then.check_modal_not_present">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A alertbox is not opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A confirmbox is not opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A prompt is not opened&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_modal_not_present</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating an alertbox/confirmbox/prompt box is not opened</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">alert_is_present</span><span class="p">())</span><span class="o">.</span><span class="n">is_false</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_number_of_tabs"><a class="viewcode-back" href="../index.html#steps_then.check_number_of_tabs">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;There are &#39;(?P&lt;count&gt;.*)&#39; tabs currently opened&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;There are &#39;(?P&lt;count&gt;.*)&#39; windows currently opened&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_number_of_tabs</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the count of currently opened tabs/windows</span>
+
+<span class="sd">    :param count: count_to_validate</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span><span class="p">))</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_new_window"><a class="viewcode-back" href="../index.html#steps_then.check_new_window">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A new tab is opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A new window is opened&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_new_window</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating a new window/tab is opened</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">windows</span><span class="o">.</span><span class="fm">__len__</span><span class="p">())</span><span class="o">.</span><span class="n">is_greater_than</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_no_new_window"><a class="viewcode-back" href="../index.html#steps_then.check_no_new_window">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A new tab is not opened&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;A new window is not opened&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_no_new_window</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating a new window/tab is not opened</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">windows</span><span class="o">.</span><span class="fm">__len__</span><span class="p">())</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_cookies_presence"><a class="viewcode-back" href="../index.html#steps_then.check_cookies_presence">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;I expect the cookies to be present&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_cookies_presence</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the cookies are present in the page</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">())</span><span class="o">.</span><span class="n">is_not_empty</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_cookie_presence"><a class="viewcode-back" href="../index.html#steps_then.check_cookie_presence">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect cookie &#39;(?P&lt;name&gt;.*)&#39; with value &#39;(?P&lt;value&gt;.*)&#39; to be present&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_cookie_presence</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating a particulare is present</span>
+
+<span class="sd">    :param name: name_of_the_cookie</span>
+<span class="sd">    :param value: value_of_cookie</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_cookie</span><span class="p">(</span><span class="n">name</span><span class="p">))</span><span class="o">.</span><span class="n">is_not_equal_to</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_cookie</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_cookie_update"><a class="viewcode-back" href="../index.html#steps_then.check_cookie_update">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect the value of newly added cookie &#39;(?P&lt;name&gt;.*)&#39; to be updated with &#39;(?P&lt;value&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_cookie_update</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the newly added value to a cookie is updated</span>
+
+<span class="sd">    :param name: name_of_cookie</span>
+<span class="sd">    :param value: value_of_the_cookie</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_cookie</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_cookie_delete"><a class="viewcode-back" href="../index.html#steps_then.check_cookie_delete">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I expect cookie &#39;(?P&lt;name&gt;.*)&#39; to be deleted&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_cookie_delete</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validating the cookie is deleted</span>
+
+<span class="sd">    :param name: name_of_the_cookie</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_cookie</span><span class="p">(</span><span class="n">name</span><span class="p">))</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ITT Digital.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

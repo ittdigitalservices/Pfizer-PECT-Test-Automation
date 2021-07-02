@@ -1,0 +1,716 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>steps_custom &mdash; Pfizer Eclinical Test Trails 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Pfizer Eclinical Test Trails
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pfizer Eclinical Test Trails</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>steps_custom</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for steps_custom</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">assertpy</span> <span class="kn">import</span> <span class="n">soft_assertions</span><span class="p">,</span> <span class="n">assert_that</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">when</span><span class="p">,</span> <span class="n">parsers</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">then</span>
+<span class="kn">from</span> <span class="nn">pytest_selenium_enhancer</span> <span class="kn">import</span> <span class="n">CustomWait</span>
+<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">HTTPError</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+
+<span class="kn">from</span> <span class="nn">actions.browser</span> <span class="kn">import</span> <span class="n">BrowserActions</span>
+<span class="kn">from</span> <span class="nn">page_objects.selenium_generics</span> <span class="kn">import</span> <span class="n">SeleniumGenerics</span>
+<span class="kn">from</span> <span class="nn">utils.gherkin_utils</span> <span class="kn">import</span> <span class="n">data_table_vertical_converter</span><span class="p">,</span> <span class="n">data_table_horizontal_converter</span>
+<span class="kn">from</span> <span class="nn">utils.locators</span> <span class="kn">import</span> <span class="n">Locators</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">step_custom.py</span>
+<span class="sd">====================================</span>
+<span class="sd">Implmentation of all custom step definitions in Boiler Plate Template</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="navigate_to_external_page"><a class="viewcode-back" href="../index.html#steps_custom.navigate_to_external_page">[docs]</a><span class="nd">@given</span><span class="p">(</span><span class="s2">&quot;I navigate to external page &lt;url&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@given</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I navigate to external page &#39;(?P&lt;url&gt;.*)&#39;&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">navigate_to_external_page</span><span class="p">(</span><span class="n">browser</span><span class="p">:</span> <span class="n">BrowserActions</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Navigate to a external page url</span>
+
+<span class="sd">    :param browser: value will be passed from BrowserActions class</span>
+<span class="sd">    :param url: url_which_you_wants_to_navigate</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">browser</span><span class="o">.</span><span class="n">go_to_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I click on &lt;locator_path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I click on &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">click_on_element</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To perform a click on an element in a webpage</span>
+
+<span class="sd">    :param locator_path: locator/xpath of the element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">scroll_into_view</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">xpath</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">xpath</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="click_on_shadow_element"><a class="viewcode-back" href="../index.html#steps_custom.click_on_shadow_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I click on shadowElement &lt;element_path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I click on shadowElement:(?P&lt;element_path&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">element_path</span><span class="o">=</span><span class="n">data_table_horizontal_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">click_on_shadow_element</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">element_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To perform a click on the shadow element on a webpage</span>
+
+<span class="sd">    :param element_path: locator/xpath of the element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">parent_xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">element_path</span><span class="p">[</span><span class="s1">&#39;parent_xpath&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">locator_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">element_path</span><span class="p">[</span><span class="s1">&#39;shadow_path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; ~ &#39;</span><span class="p">)]</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">shadow_click</span><span class="p">(</span><span class="n">parent_xpath</span><span class="p">,</span> <span class="o">*</span><span class="n">locator_paths</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="hover_over_element"><a class="viewcode-back" href="../index.html#steps_custom.hover_over_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I hover over &lt;locator_path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I hover over &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">hover_over_element</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To Perform an hover on an element on webpage:</span>
+
+<span class="sd">    :param locator_path: locator/xpath of the element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="c1"># selenium_generics.scroll_into_view(selector=xpath)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">hover</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="hover_over_shadow_element"><a class="viewcode-back" href="../index.html#steps_custom.hover_over_shadow_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I hover over shadowElement &lt;element_path&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I hover over shadowElement:(?P&lt;element_path&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">element_path</span><span class="o">=</span><span class="n">data_table_horizontal_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">hover_over_shadow_element</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">element_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To Perform an hover on an shadow element on webpage:</span>
+
+<span class="sd">    :param element_path: path of the shadow element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">parent_xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">element_path</span><span class="p">[</span><span class="s1">&#39;parent_xpath&#39;</span><span class="p">])</span>
+    <span class="n">locator_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">element_path</span><span class="p">[</span><span class="s1">&#39;shadow_path&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; ~ &#39;</span><span class="p">)]</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">shadow_hover</span><span class="p">(</span><span class="n">parent_xpath</span><span class="p">,</span> <span class="o">*</span><span class="n">locator_paths</span><span class="p">)</span></div>
+
+
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set &#39;(?P&lt;component_locator&gt;.*)&#39; component style:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">html_block</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">paragraph</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">nextgen_simple_card_style</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">component_locator</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">set_component_style</span><span class="p">(</span><span class="n">component_locator</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+
+
+<span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I collect all urls from sitemap&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">urls_from_sitemap</span><span class="p">(</span><span class="n">base_url</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To collect all the URL&#39;s from the sitemap</span>
+
+<span class="sd">    :param base_url: url of the sitemap</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s1">/sitemap.xml&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPError</span><span class="p">(</span><span class="s1">&#39;Status Code was not 200. Exiting!!&#39;</span><span class="p">)</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sitemap</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">sitemap</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;urls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urls</span>
+
+
+<div class="viewcode-block" id="urls_from_sitemap"><a class="viewcode-back" href="../index.html#steps_custom.urls_from_sitemap">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I fetch all urls from external site &#39;(?P&lt;site_url&gt;.*)&#39; sitemap&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">urls_from_sitemap</span><span class="p">(</span><span class="n">site_url</span><span class="p">,</span> <span class="n">log</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To fetch all the URL&#39;s frm the external site</span>
+
+<span class="sd">    :param site_url: external_url_value</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Collecting sitemap URLs for </span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1">/sitemap.xml&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span><span class="s1">&#39;Status Code was not 200. Exiting!!&#39;</span><span class="p">)</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sitemap</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">sitemap</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;urls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urls</span></div>
+
+
+<div class="viewcode-block" id="sitemap_urls_loading"><a class="viewcode-back" href="../index.html#steps_custom.sitemap_urls_loading">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Sitemap urls are fetching&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">sitemap_urls_loading</span><span class="p">(</span><span class="n">log</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sitemap urls are fetching and validating the status code</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;urls&#39;</span><span class="p">]</span>
+    <span class="k">with</span> <span class="n">soft_assertions</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Loading URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">assert_that</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;URL </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1"> is not the same with </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">is_subset_of</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">assert_that</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+                        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1"> load status code is </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">is_less_than_or_equal_to</span><span class="p">(</span>
+                <span class="mi">307</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_external_site_loading"><a class="viewcode-back" href="../index.html#steps_custom.check_external_site_loading">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;External site &#39;(?P&lt;site_url&gt;.*)&#39; url is fetching&quot;</span><span class="p">))</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;External url &#39;(?P&lt;site_url&gt;.*)&#39; url is fetching&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_external_site_loading</span><span class="p">(</span><span class="n">site_url</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Fetching the external site URL and comparing the status code to be less than 300</span>
+
+<span class="sd">    :param site_url: external_site_url</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">]</span>
+    <span class="k">with</span> <span class="n">soft_assertions</span><span class="p">():</span>
+        <span class="n">assert_that</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;URL </span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1"> load status code is </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">is_less_than</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="take_full_page_screenshot_from_sitemap_with_actions"><a class="viewcode-back" href="../index.html#steps_custom.take_full_page_screenshot_from_sitemap_with_actions">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Sitemap pages, take a full page screenshot with actions:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">take_full_page_screenshot_from_sitemap_with_actions</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To take a full page screenshot with desired actions</span>
+
+
+<span class="sd">    :param base_url: url_of_the_page</span>
+<span class="sd">    :param data_table: list_of_actions</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span> \
+        <span class="k">if</span> <span class="s1">&#39;screenshots&#39;</span> <span class="ow">in</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;pdf_file_name&#39;</span><span class="p">]</span> <span class="o">=</span> \
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pytest</span><span class="o">.</span><span class="n">globalDict</span><span class="p">[</span><span class="s1">&#39;actual_screenshot_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/full_page/</span><span class="si">{</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_window_size</span><span class="p">()[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">selenium</span><span class="o">.</span><span class="n">get_window_size</span><span class="p">()[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;urls&#39;</span><span class="p">]</span>
+    <span class="n">custom_wait</span> <span class="o">=</span> <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">selenium</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">page_size</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">page_size</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">page_size</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="ow">or</span> <span class="n">page_size</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_actual_screenshot_dir</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="s1">&#39;01&#39;</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+        <span class="n">elements_to_hide</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_elements_to_hide</span><span class="p">(</span><span class="n">data_table</span><span class="p">)</span>
+        <span class="n">device_offset</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">capabilities</span><span class="p">[</span><span class="s1">&#39;deviceOffset&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;deviceOffset&#39;</span> <span class="ow">in</span> <span class="n">selenium</span><span class="o">.</span><span class="n">capabilities</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;pre_action_screenshot&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+            <span class="n">selenium</span><span class="o">.</span><span class="n">get_full_page_screenshot_as_png</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">,</span> <span class="n">elements_to_hide</span><span class="p">,</span> <span class="n">device_offset</span><span class="p">)</span>
+            <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+            <span class="n">base_screenshot_dir</span> <span class="o">=</span> <span class="n">actual_screenshot_dir</span>
+
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">]):</span>
+            <span class="n">selenium_generics</span><span class="o">.</span><span class="n">execute_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">selenium</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;window.scrollTo({ left: 0, top: 0});&#39;</span><span class="p">)</span>
+        <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">get_actual_screenshot_dir</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="s1">&#39;02&#39;</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+        <span class="n">selenium</span><span class="o">.</span><span class="n">get_full_page_screenshot_as_png</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">,</span> <span class="n">elements_to_hide</span><span class="p">,</span> <span class="n">device_offset</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;pre_action_screenshot&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">utils.utils</span> <span class="kn">import</span> <span class="n">compare_images</span>
+            <span class="n">base_score</span> <span class="o">=</span> <span class="mf">0.999</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">compare_images</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_screenshot_dir</span><span class="p">,</span> <span class="n">actual_screenshot_dir</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">base_score</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">base_score</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">os</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="take_element_screenshot_with_actions"><a class="viewcode-back" href="../index.html#steps_custom.take_element_screenshot_with_actions">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Take screenshots of elements with actions:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">take_element_screenshot_with_actions</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To take screen of elements with desired actions</span>
+
+<span class="sd">    :param base_url: url</span>
+<span class="sd">    :param data_table: list_of_actions</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span> \
+        <span class="k">if</span> <span class="s1">&#39;screenshots&#39;</span> <span class="ow">in</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span> <span class="k">else</span> <span class="p">[]</span>
+
+    <span class="n">custom_wait</span> <span class="o">=</span> <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span>
+
+    <span class="n">actions</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;menu_button&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+        <span class="n">selenium_generics</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">actions</span><span class="p">[</span><span class="s1">&#39;menu_button&#39;</span><span class="p">])</span>
+        <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span> \
+            <span class="n">get_actual_screenshot_dir</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="s1">&#39;megamenu_0&#39;</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+        <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;menu&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;hover&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;hover&#39;</span> <span class="ow">in</span> <span class="n">actions</span> \
+        <span class="k">else</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;click&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;click&#39;</span> <span class="ow">in</span> <span class="n">actions</span> \
+        <span class="k">else</span> <span class="p">[]</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;hover&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="n">selenium_generics</span><span class="o">.</span><span class="n">hover</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;expanded&#39;</span><span class="p">])</span>
+            <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">image_b</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">screenshot_as_base64</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="s1">&#39;//div[contains(@class, &quot;bg-image&quot;)]&#39;</span><span class="p">)</span>
+            <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">image_a</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">screenshot_as_base64</span>
+
+            <span class="kn">import</span> <span class="nn">base64</span>
+            <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+            <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+            <span class="n">image_a</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">image_a</span><span class="p">)))</span>
+            <span class="n">image_b</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">image_b</span><span class="p">)))</span>
+
+            <span class="n">stitched_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">image_a</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image_a</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">image_b</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+            <span class="n">stitched_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">image_a</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">stitched_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">image_b</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">image_a</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span> \
+                <span class="n">get_actual_screenshot_dir</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;megamenu_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+            <span class="n">stitched_image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+            <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;click&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="n">selenium_generics</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+            <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;expanded&#39;</span><span class="p">])</span>
+            <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span> \
+                <span class="n">get_actual_screenshot_dir</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;megamenu_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_screenshot_dir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;click&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                <span class="n">selenium_generics</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">actions</span><span class="p">[</span><span class="s1">&#39;click&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="element_is_displayed"><a class="viewcode-back" href="../index.html#steps_custom.element_is_displayed">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;Element &lt;locator_path&gt; state should be displayed&quot;</span><span class="p">)</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Element &#39;(?P&lt;locator_path&gt;.*)&#39; state should be displayed&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">element_is_displayed</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate an element is displayed on the given path or not</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element_from_locators.json</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">is_element_visible</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="element_is_hidden"><a class="viewcode-back" href="../index.html#steps_custom.element_is_hidden">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;Element &lt;locator_path&gt; state should be hidden&quot;</span><span class="p">)</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Element &#39;(?P&lt;locator_path&gt;.*)&#39; state should be hidden&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">element_is_hidden</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the element is hidden or not</span>
+
+<span class="sd">    :param locator_path: locator_of_the_hidden_element_from_locators.json</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">is_element_invisible</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="element_text"><a class="viewcode-back" href="../index.html#steps_custom.element_text">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;Element &lt;locator_path&gt; text should be &lt;expected_text&gt;&quot;</span><span class="p">)</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Element &#39;(?P&lt;locator_path&gt;.*)&#39; text should be &#39;(?P&lt;expected_text&gt;.*)&#39;&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">expected_text</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">expected_text</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the element text with expected text</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element_from_locators.json</span>
+<span class="sd">    :param expected_text: text_to_compare</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">validate_element_text</span><span class="p">(</span><span class="n">xpath</span><span class="p">,</span> <span class="n">expected_text</span><span class="p">)</span></div>
+
+
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Element &#39;(?P&lt;locator_path&gt;.*)&#39; style should be:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">header_menu_button_style</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the css style of an element against given styles</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element_from_locators.json</span>
+<span class="sd">    :param data_table: styles_as_list</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">validate_element_style</span><span class="p">(</span><span class="n">xpath</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="header_menu_button_style"><a class="viewcode-back" href="../index.html#steps_custom.header_menu_button_style">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;ShadowElement style should be:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">button_text</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">header_menu_button_style</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the css style of a shadow element against given styles</span>
+
+<span class="sd">    :param data_table: styles_as_list</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">validate_shadow_element_style</span><span class="p">(</span><span class="n">data_table</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="page_loaded"><a class="viewcode-back" href="../index.html#steps_custom.page_loaded">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;Page &lt;page_url&gt; is loaded&quot;</span><span class="p">)</span>
+<span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Page &#39;(?P&lt;page_url&gt;.*)&#39; is loaded&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">page_url</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">page_loaded</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">page_url</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the given page url is loaded or not</span>
+
+<span class="sd">    :param page_url: url_value</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">validate_page_loaded</span><span class="p">(</span><span class="n">page_url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="page_scroll_position"><a class="viewcode-back" href="../index.html#steps_custom.page_scroll_position">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Page scroll position is &#39;(?P&lt;scroll_position&gt;.*)&#39;&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">scroll_position</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">page_scroll_position</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">scroll_position</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Scrolling to the particular position of the webpage</span>
+
+<span class="sd">    :param scroll_position: value_of_scroll_position</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">validate_scroll_position</span><span class="p">(</span><span class="n">scroll_position</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="page_visual_is_valid"><a class="viewcode-back" href="../index.html#steps_custom.page_visual_is_valid">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;Page visual regression is correct:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data_table</span><span class="o">=</span><span class="n">data_table_horizontal_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">page_visual_is_valid</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To validate the full page screenshot against the base/given image</span>
+
+<span class="sd">    :param data_table: elements_to_hide_values</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">custom_wait</span> <span class="o">=</span> <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span>
+
+    <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+        <span class="s1">&#39;window.scrollTo({ left: 0, top: 0});&#39;</span><span class="p">)</span>
+    <span class="n">custom_wait</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="n">base_screenshot_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pytest</span><span class="o">.</span><span class="n">globalDict</span><span class="p">[</span><span class="s1">&#39;base_screenshot_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/full_page/</span><span class="si">{</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">selenium_generics</span><span class="o">.</span><span class="n">_file_extension</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">actual_screenshot_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pytest</span><span class="o">.</span><span class="n">globalDict</span><span class="p">[</span><span class="s1">&#39;actual_screenshot_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/full_page/</span><span class="si">{</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">selenium_generics</span><span class="o">.</span><span class="n">_file_extension</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">diff_screenshot_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pytest</span><span class="o">.</span><span class="n">globalDict</span><span class="p">[</span><span class="s1">&#39;diff_screenshot_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/full_page/</span><span class="si">{</span><span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">selenium_generics</span><span class="o">.</span><span class="n">_file_extension</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">device_offset</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">capabilities</span><span class="p">[</span><span class="s1">&#39;deviceOffset&#39;</span><span class="p">]</span> \
+        <span class="k">if</span> <span class="s1">&#39;deviceOffset&#39;</span> <span class="ow">in</span> <span class="n">selenium</span><span class="o">.</span><span class="n">capabilities</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">elements_to_hide</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">data_table</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">image_cv2</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">get_full_page_screenshot_as_base64</span><span class="p">(</span><span class="n">elements_to_hide</span><span class="p">,</span> <span class="n">device_offset</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">utils.utils</span> <span class="kn">import</span> <span class="n">compare_images</span>
+    <span class="n">base_score</span> <span class="o">=</span> <span class="mf">0.999</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">compare_images</span><span class="p">(</span><span class="n">image_cv2</span><span class="p">,</span> <span class="n">base_screenshot_dir</span><span class="p">,</span> <span class="n">actual_screenshot_dir</span><span class="p">,</span> <span class="n">diff_screenshot_dir</span><span class="p">,</span> <span class="n">base_score</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">base_score</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Actual component screenshot is different from Base with </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">. Diff saved here: </span><span class="si">{</span><span class="n">diff_screenshot_dir</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_pdf"><a class="viewcode-back" href="../index.html#steps_custom.generate_pdf">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;I generate a pdf for the screenshots taken&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">generate_pdf</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To generate a pdf with all the screenshot taken</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+    <span class="n">screenshots</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span>
+    <span class="n">pdf_file_name</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;pdf_file_name&#39;</span><span class="p">]</span>
+
+    <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">screenshot</span> <span class="ow">in</span> <span class="n">screenshots</span><span class="p">:</span>
+        <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">screenshot</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">))</span>
+
+    <span class="n">first_image</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">first_image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">pdf_file_name</span><span class="p">,</span> <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">append_images</span><span class="o">=</span><span class="n">images</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_pdfs"><a class="viewcode-back" href="../index.html#steps_custom.generate_pdfs">[docs]</a><span class="nd">@then</span><span class="p">(</span><span class="s2">&quot;I generate pdfs for the screenshots taken&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">generate_pdfs</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To generate a pdf with the current screenshot taken</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+    <span class="n">screenshots</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">scenarioDict</span><span class="p">[</span><span class="s1">&#39;screenshots&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">screenshot</span> <span class="ow">in</span> <span class="n">screenshots</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">screenshot</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">screenshot</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="nextgen_simple_card_style"><a class="viewcode-back" href="../index.html#steps_custom.nextgen_simple_card_style">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set &#39;(?P&lt;component_locator&gt;.*)&#39; component style:(?P&lt;data_table&gt;.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">html_block</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">paragraph</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">data_table</span><span class="o">=</span><span class="n">data_table_vertical_converter</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">nextgen_simple_card_style</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">component_locator</span><span class="p">,</span> <span class="n">data_table</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To set the style of an element</span>
+
+<span class="sd">    :param component_locator: locator_path_of_the_component</span>
+<span class="sd">    :param data_table: styles_as_list</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">set_component_style</span><span class="p">(</span><span class="n">component_locator</span><span class="p">,</span> <span class="n">data_table</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="click_on_element"><a class="viewcode-back" href="../index.html#steps_custom.click_on_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set text &#39;(?P&lt;text&gt;.*)&#39; to field &#39;(?P&lt;locator_path&gt;.*)&#39;&#39;&quot;</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">click_on_element</span><span class="p">(</span><span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    To set the text into a given field</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element_from_locators.json</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">scroll_into_view</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">xpath</span><span class="p">)</span>
+    <span class="n">selenium_generics</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_search_result"><a class="viewcode-back" href="../index.html#steps_custom.compare_search_result">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span>
+    <span class="s2">&quot;I search keywords &#39;(?P&lt;text&gt;.*)&#39; in field &#39;(?P&lt;locator_path1&gt;.*)&#39; then I click &#39;(?P&lt;locator_path2&gt;.*)&#39; and compare results count in &#39;(?P&lt;locator_path3&gt;.*)&#39;&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">locator_path</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">compare_search_result</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">selenium_generics</span><span class="p">:</span> <span class="n">SeleniumGenerics</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path1</span><span class="p">,</span>
+                          <span class="n">locator_path2</span><span class="p">,</span> <span class="n">locator_path3</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Searching and comparing the results of given texts</span>
+
+<span class="sd">    :param text: text_to_search</span>
+<span class="sd">    :param locator_path1: search_box_location</span>
+<span class="sd">    :param locator_path2: find_key_location</span>
+<span class="sd">    :param locator_path3: result_label_location</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xpath1</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path1</span><span class="p">)</span>
+    <span class="n">xpath2</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path2</span><span class="p">)</span>
+    <span class="n">xpath3</span> <span class="o">=</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path3</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">selenium_generics</span><span class="o">.</span><span class="n">search_compare_result_count</span><span class="p">(</span><span class="n">xpath1</span><span class="p">,</span> <span class="n">xpath2</span><span class="p">,</span> <span class="n">xpath3</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">assert_that</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">is_equal_to</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ITT Digital.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>steps_when &mdash; Pfizer Eclinical Test Trails 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Pfizer Eclinical Test Trails
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pfizer Eclinical Test Trails</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>steps_when</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for steps_when</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">when</span><span class="p">,</span> <span class="n">parsers</span>
+<span class="kn">from</span> <span class="nn">pytest_selenium_enhancer</span> <span class="kn">import</span> <span class="n">CustomWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver</span> <span class="kn">import</span> <span class="n">ActionChains</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.select</span> <span class="kn">import</span> <span class="n">Select</span>
+
+<span class="kn">from</span> <span class="nn">utils.locators</span> <span class="kn">import</span> <span class="n">Locators</span>
+
+
+<div class="viewcode-block" id="set_locale"><a class="viewcode-back" href="../index.html#steps_when.set_locale">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set the locale for locators to &#39;(?P&lt;locale&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set the language for locators to &#39;(?P&lt;locale&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">set_locale</span><span class="p">(</span><span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setting up the locale for an element using the locators</span>
+
+<span class="sd">    :param locale: locale_name</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">locators</span><span class="o">.</span><span class="n">set_locale</span><span class="p">(</span><span class="n">locale</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="click_element"><a class="viewcode-back" href="../index.html#steps_when.click_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I click on &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">click_element</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing an click operation on an element</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="dbl_click_element"><a class="viewcode-back" href="../index.html#steps_when.dbl_click_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I double click on &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I doubleclick on &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">dbl_click_element</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a double click on an element</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">ActionChains</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">double_click</span><span class="p">(</span><span class="n">element</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="js_click_element"><a class="viewcode-back" href="../index.html#steps_when.js_click_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I programmatic click on &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">js_click_element</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a click on an element using java script</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;arguments[0].click();&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="add_element_value"><a class="viewcode-back" href="../index.html#steps_when.add_element_value">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I add text &#39;(?P&lt;text&gt;.*)&#39; to field &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">add_element_value</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a text append in an element</span>
+
+<span class="sd">    :param text: text_to_append</span>
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">actual_text</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">actual_text</span> <span class="o">+</span> <span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_element_value"><a class="viewcode-back" href="../index.html#steps_when.set_element_value">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set text &#39;(?P&lt;text&gt;.*)&#39; to field &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">set_element_value</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a text insert in an element</span>
+
+<span class="sd">    :param text: text_to_insert</span>
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_add_element_value"><a class="viewcode-back" href="../index.html#steps_when.set_add_element_value">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I clear text from field &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">set_add_element_value</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clearing the text from an input text field</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="drag_and_drop_element"><a class="viewcode-back" href="../index.html#steps_when.drag_and_drop_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I drag and drop element &#39;(?P&lt;source&gt;.*)&#39; to element &#39;(?P&lt;target&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">drag_and_drop_element</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a drag and drop of an element using source and target value</span>
+
+<span class="sd">    :param source: source_of_the_element</span>
+<span class="sd">    :param target: target_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_elem</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+    <span class="n">target_elem</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+
+    <span class="n">action</span> <span class="o">=</span> <span class="n">ActionChains</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span>
+    <span class="n">action</span><span class="o">.</span><span class="n">drag_and_drop</span><span class="p">(</span><span class="n">source_elem</span><span class="p">,</span> <span class="n">target_elem</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="pause_execution"><a class="viewcode-back" href="../index.html#steps_when.pause_execution">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I pause for &#39;(?P&lt;time&gt;.*)&#39; s&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">pause_execution</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a custom wait for give seconds</span>
+
+<span class="sd">    :param time: seconds_to_wait</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CustomWait</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">static_wait</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="fetch_cookies"><a class="viewcode-back" href="../index.html#steps_when.fetch_cookies">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="s2">&quot;I fetch existing cookies from the site&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fetch_cookies</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetching the existing cookies from the site</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">()</span></div>
+
+
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I update the value of newly added cookie &#39;(?P&lt;name&gt;.*)&#39; with &#39;(?P&lt;value&gt;.*)&#39; for path &#39;(?P&lt;path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I set the cookie &#39;(?P&lt;name&gt;.*)&#39; with value &#39;(?P&lt;value&gt;.*)&#39; for path &#39;(?P&lt;path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_cookie_content</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updating the newly added cookie value to given value</span>
+
+<span class="sd">    :param name: name_of_cookie</span>
+<span class="sd">    :param value: value_to_update</span>
+<span class="sd">    :param path: path_of_cookie</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">add_cookie</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">})</span>
+
+
+<div class="viewcode-block" id="check_cookie_content"><a class="viewcode-back" href="../index.html#steps_when.check_cookie_content">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I delete the cookie &#39;(?P&lt;name&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_cookie_content</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deleting a cookie</span>
+
+<span class="sd">    :param name: name_of_the_cookie</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">delete_cookie</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="press_button"><a class="viewcode-back" href="../index.html#steps_when.press_button">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I press &#39;(?P&lt;key&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">press_button</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a key press</span>
+
+<span class="sd">    :param key: key_to_press</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ActionChains</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="accept_modal"><a class="viewcode-back" href="../index.html#steps_when.accept_modal">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I accept popup prompt&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I accept popup alertbox&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I accept popup confirmbox&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">accept_modal</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Accepting the prompt/alertbox/confirmbox popup</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to</span><span class="p">()</span><span class="o">.</span><span class="n">alert</span><span class="p">()</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="dismiss_modal"><a class="viewcode-back" href="../index.html#steps_when.dismiss_modal">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I dismiss popup prompt&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I dismiss popup alertbox&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I dismiss popup confirmbox&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">dismiss_modal</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dismissing the prompt/alertbox/confirmbox popup</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to</span><span class="p">()</span><span class="o">.</span><span class="n">alert</span><span class="p">()</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_modal"><a class="viewcode-back" href="../index.html#steps_when.check_modal">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I enter (?P&lt;text&gt;.*) into popup alertbox&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I enter (?P&lt;text&gt;.*) into popup confirmbox&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I enter (?P&lt;text&gt;.*) into popup prompt&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">check_modal</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Entering the given text into an alertbox/confirmbox/prompt popup</span>
+
+<span class="sd">    :param text: text_to_enter</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to</span><span class="p">()</span><span class="o">.</span><span class="n">alert</span><span class="p">()</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="scroll_to_element"><a class="viewcode-back" href="../index.html#steps_when.scroll_to_element">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I scroll to element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">scroll_to_element</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performing a scroll to an element</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">script</span> <span class="o">=</span> <span class="s1">&#39;arguments[0].scrollIntoView({block: &quot;center&quot;, inline: &quot;center&quot;})&#39;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="close_last_opened_window"><a class="viewcode-back" href="../index.html#steps_when.close_last_opened_window">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I close the last opened window&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I close the last opened tab&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">close_last_opened_window</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Closing the latest window</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="switch_to_last"><a class="viewcode-back" href="../index.html#steps_when.switch_to_last">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I focus the last opened window&quot;</span><span class="p">))</span>
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I focus the last opened tab&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">switch_to_last</span><span class="p">(</span><span class="n">selenium</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Focusing on the latest window</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">window_handles</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="select_option_by_index"><a class="viewcode-back" href="../index.html#steps_when.select_option_by_index">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I select the option at index &#39;(?P&lt;index&gt;.*)&#39; element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">select_option_by_index</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecting an option from a dropdown using the index</span>
+
+<span class="sd">    :param index: index_to_select</span>
+<span class="sd">    :param locator_path: locator_of_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">select_by_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="select_option_by_value"><a class="viewcode-back" href="../index.html#steps_when.select_option_by_value">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I select the option &#39;(?P&lt;option&gt;.*)&#39; by value for element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">select_option_by_value</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecting an option from a dropdown using the value</span>
+
+<span class="sd">    :param option: value_to_select</span>
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">select_by_value</span><span class="p">(</span><span class="n">option</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="select_option_by_visible_text"><a class="viewcode-back" href="../index.html#steps_when.select_option_by_visible_text">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I select the option &#39;(?P&lt;option&gt;.*)&#39; by visible text for element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">select_option_by_visible_text</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecting an option from a dropdown using the visible text</span>
+
+<span class="sd">    :param option: text_to_select</span>
+<span class="sd">    :param locator_path: locator_of_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">select_by_visible_text</span><span class="p">(</span><span class="n">option</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="deselect_option_index"><a class="viewcode-back" href="../index.html#steps_when.deselect_option_index">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I deselect the option at index &#39;(?P&lt;index&gt;.*)&#39; element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">),</span>
+      <span class="n">converters</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">deselect_option_index</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deselecting the option from a dropdown using the index</span>
+
+<span class="sd">    :param index: index_to_deselect</span>
+<span class="sd">    :param locator_path: locator_path</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">deselect_by_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="deselect_option_by_value"><a class="viewcode-back" href="../index.html#steps_when.deselect_option_by_value">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I deselect the option &#39;(?P&lt;option&gt;.*)&#39; by value for element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">deselect_option_by_value</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deselecting the option from a dropdown using the value</span>
+
+<span class="sd">    :param option: value_to_deselect</span>
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">deselect_by_value</span><span class="p">(</span><span class="n">option</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="deselect_option_by_visible_text"><a class="viewcode-back" href="../index.html#steps_when.deselect_option_by_visible_text">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I deselect the option &#39;(?P&lt;option&gt;.*)&#39; by visible text for element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">deselect_option_by_visible_text</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deselecting the option from a dropdown using the visible text</span>
+
+<span class="sd">    :param option: text_to_deselect</span>
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">)))</span>
+    <span class="n">select</span><span class="o">.</span><span class="n">deselect_by_visible_text</span><span class="p">(</span><span class="n">option</span><span class="p">)</span></div>
+
+
+<span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I move to element &#39;(?P&lt;locator_path&gt;.*)&#39; with offset &#39;(?P&lt;x&gt;.*)&#39; &#39;(?P&lt;y&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">move_to_element_by_offset</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moving the mouse cursor to the element using given x, y co-ordinates</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :param x: x_co-ordinates</span>
+<span class="sd">    :param y: y_co-ordinates</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">ActionChains</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">move_to_element_with_offset</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="move_to_element_by_offset"><a class="viewcode-back" href="../index.html#steps_when.move_to_element_by_offset">[docs]</a><span class="nd">@when</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s2">&quot;I move to element &#39;(?P&lt;locator_path&gt;.*)&#39;&quot;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">move_to_element_by_offset</span><span class="p">(</span><span class="n">selenium</span><span class="p">,</span> <span class="n">locators</span><span class="p">:</span> <span class="n">Locators</span><span class="p">,</span> <span class="n">locator_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moving the mouse cursor to the element</span>
+
+<span class="sd">    :param locator_path: locator_of_the_element</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">locators</span><span class="o">.</span><span class="n">parse_and_get</span><span class="p">(</span><span class="n">locator_path</span><span class="p">))</span>
+    <span class="n">ActionChains</span><span class="p">(</span><span class="n">selenium</span><span class="p">)</span><span class="o">.</span><span class="n">move_to_element</span><span class="p">(</span><span class="n">element</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ITT Digital.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
